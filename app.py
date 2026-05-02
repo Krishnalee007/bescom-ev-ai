@@ -1,19 +1,9 @@
-
-# ============================================================
-# BESCOM EV GRID INTELLIGENCE — Streamlit App (app.py)
-# ============================================================
-# Save this file as:  app.py
-# Save in a folder called:  bescom-ev-ai/
-# ============================================================
-
 import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
-from plotly.subplots import make_subplots
 
-# ── Page config ──────────────────────────────────────────────
 st.set_page_config(
     page_title="BESCOM EV Grid Intelligence",
     page_icon="⚡",
@@ -21,581 +11,375 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ── Custom CSS ────────────────────────────────────────────────
 st.markdown("""
 <style>
-    .main { background-color: #0F172A; }
-    .stMetric { background: #1E293B; border-radius: 12px; padding: 16px; border: 1px solid #334155; }
-    .stMetric label { color: #94A3B8 !important; font-size: 12px !important; }
-    .stMetric .metric-value { color: #F1F5F9 !important; }
-    div[data-testid="metric-container"] {
-        background: #1E293B; border: 1px solid #334155;
-        border-radius: 12px; padding: 16px;
-    }
-    .alert-red   { background:#3B1515; border-left:4px solid #EF4444; padding:12px 16px; border-radius:8px; margin:8px 0; }
-    .alert-amber { background:#3B2A0A; border-left:4px solid #F59E0B; padding:12px 16px; border-radius:8px; margin:8px 0; }
-    .alert-green { background:#0F2E1A; border-left:4px solid #22C55E; padding:12px 16px; border-radius:8px; margin:8px 0; }
-    .card        { background:#1E293B; border:1px solid #334155; border-radius:12px; padding:20px; margin:8px 0; }
-    .rank-badge  { background:#2563EB; color:white; border-radius:6px; padding:2px 10px; font-weight:700; font-size:13px; }
-    h1,h2,h3 { color: #F1F5F9 !important; }
-    .sidebar .sidebar-content { background: #020A14; }
-    [data-testid="stSidebar"] { background: #020A14; }
+.block-container { padding-top: 1.5rem; padding-bottom: 1rem; }
+div[data-testid="stMetricValue"] > div { font-size: 1.8rem !important; }
 </style>
 """, unsafe_allow_html=True)
 
-# ── Load Data ─────────────────────────────────────────────────
+PLOT_LAYOUT = dict(
+    plot_bgcolor="#1E293B", paper_bgcolor="#0F172A", font_color="#94A3B8",
+    xaxis=dict(gridcolor="#334155", zerolinecolor="#334155"),
+    yaxis=dict(gridcolor="#334155", zerolinecolor="#334155"),
+    legend=dict(bgcolor="#1E293B", bordercolor="#334155", borderwidth=1),
+    margin=dict(l=10, r=10, t=30, b=10),
+)
+
+ZONE_COLORS = {
+    "Koramangala": "#EF4444", "HSR Layout": "#F59E0B",
+    "Whitefield": "#3B82F6",  "Electronic City": "#10B981",
+    "Hebbal": "#8B5CF6",      "Indiranagar": "#EC4899",
+}
+ZONES = ["Koramangala","HSR Layout","Whitefield","Electronic City","Hebbal","Indiranagar"]
+
 @st.cache_data
-def load_data():
-    zone_load     = pd.read_csv("zone_load.csv")
-    ev_counts     = pd.read_csv("ev_counts.csv")
-    transformers  = pd.read_csv("transformers.csv")
-    stations      = pd.read_csv("charging_stations.csv")
-    forecast      = pd.read_csv("forecast_output.csv")
-    sched_compare = pd.read_csv("schedule_comparison.csv")
-    sched_grid    = pd.read_csv("schedule_grid.csv")
-    recommendations = pd.read_csv("charging_recommendations.csv")
-    priority      = pd.read_csv("zone_priority_scores.csv")
-    locations     = pd.read_csv("location_recommendations.csv")
-    return (zone_load, ev_counts, transformers, stations,
-            forecast, sched_compare, sched_grid,
-            recommendations, priority, locations)
+def load():
+    return (
+        pd.read_csv("zone_load.csv"), pd.read_csv("ev_counts.csv"),
+        pd.read_csv("transformers.csv"), pd.read_csv("charging_stations.csv"),
+        pd.read_csv("forecast_output.csv"), pd.read_csv("schedule_comparison.csv"),
+        pd.read_csv("schedule_grid.csv"), pd.read_csv("charging_recommendations.csv"),
+        pd.read_csv("zone_priority_scores.csv"), pd.read_csv("location_recommendations.csv"),
+    )
 
 try:
-    (zone_load, ev_counts, transformers, stations,
-     forecast, sched_compare, sched_grid,
-     recommendations, priority, locations) = load_data()
-    data_ok = True
+    (zone_load, ev_counts, transformers, stations, forecast,
+     sched_compare, sched_grid, recommendations, priority, locations) = load()
 except Exception as e:
-    data_ok = False
-    st.error(f"⚠️ Could not load data files: {e}")
+    st.error(f"Could not load data: {e}")
     st.info("Make sure all CSV files from Steps 1–4 are in the same folder as app.py")
     st.stop()
 
-ZONES = forecast["zone"].unique().tolist()
-ZONE_COLORS = {
-    "Koramangala":    "#EF4444",
-    "HSR Layout":     "#F59E0B",
-    "Whitefield":     "#3B82F6",
-    "Electronic City":"#10B981",
-    "Hebbal":         "#8B5CF6",
-    "Indiranagar":    "#EC4899",
-}
-
-# ── Sidebar ───────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("### ⚡ BESCOM")
+    st.markdown("## ⚡ BESCOM")
     st.markdown("**EV Grid Intelligence**")
     st.caption("AI Decision-Support Layer · v1.0")
     st.divider()
-
-    page = st.radio("Navigate", [
-        "🏠  Overview",
-        "📈  Demand Forecast",
-        "🕐  Charging Scheduler",
-        "📍  Infrastructure Planner",
+    page = st.radio("", [
+        "🏠  Overview", "📈  Demand Forecast",
+        "🕐  Charging Scheduler", "📍  Infrastructure Planner",
     ], label_visibility="collapsed")
-
     st.divider()
-    st.caption("Data: Synthetic · Bengaluru 2025–26")
+    st.caption("Synthetic data · Bengaluru 2025–26")
     st.caption("Model: Gradient Boosting · 6 zones")
-
-    # Live clock substitute
     import datetime
-    now = datetime.datetime.now().strftime("%d %b %Y · %H:%M")
-    st.markdown(f"<small style='color:#475569'>{now} IST</small>", unsafe_allow_html=True)
+    st.caption(datetime.datetime.now().strftime("%d %b %Y · %H:%M IST"))
 
 
-# ═══════════════════════════════════════════════════════════════
-# PAGE 1 — OVERVIEW
-# ═══════════════════════════════════════════════════════════════
+# ═══════════════════════════ PAGE 1 — OVERVIEW ═══════════════════════════
 if "Overview" in page:
     st.title("⚡ BESCOM EV Grid Intelligence")
-    st.caption("Real-time AI decision-support for EV charging demand and infrastructure planning")
+    st.caption("AI decision-support for EV charging demand and infrastructure planning · Bengaluru")
     st.divider()
 
-    # ── KPI Row ──
-    total_evs     = ev_counts[ev_counts["year"]==2026]["ev_count"].sum()
-    total_chargers= stations["chargers_count"].sum()
-    critical_trs  = (transformers["status"]=="Critical").sum()
-    avg_peak_util = transformers["utilization_pct"].mean()
-    peak_reduction= sched_compare["peak_reduction_pct"].mean()
-    zones_at_risk = (sched_compare["hours_over_limit_baseline"] > 0).sum()
+    total_evs     = int(ev_counts[ev_counts["year"]==2026]["ev_count"].sum())
+    critical_trs  = int((transformers["utilization_pct"] >= 90).sum())
+    avg_util      = transformers["utilization_pct"].mean()
+    avg_reduction = sched_compare["peak_reduction_pct"].mean()
 
     c1,c2,c3,c4,c5,c6 = st.columns(6)
-    c1.metric("Total EVs (2026)",       f"{total_evs:,}",     "+31% YoY")
-    c2.metric("Charging Stations",      f"{len(stations)}",   "Across 6 zones")
-    c3.metric("Total Chargers",         f"{total_chargers}",  "Public + Private")
-    c4.metric("Critical Transformers",  f"{critical_trs}",    delta="⚠️ Immediate action", delta_color="inverse")
-    c5.metric("Avg Peak Utilisation",   f"{avg_peak_util:.1f}%", "Grid-wide")
-    c6.metric("Scheduling Benefit",     f"{peak_reduction:.1f}%", "Peak load reduction")
+    c1.metric("Total EVs (2026)",      f"{total_evs:,}",       "↑ 31% YoY")
+    c2.metric("Charging Stations",     f"{len(stations)}",     "Across 6 zones")
+    c3.metric("Total Chargers",        f"{stations['chargers_count'].sum()}", "Public + Private")
+    c4.metric("Critical Transformers", f"{critical_trs}",      "≥ 90% utilisation", delta_color="inverse")
+    c5.metric("Avg Grid Utilisation",  f"{avg_util:.1f}%",     "At evening peak")
+    c6.metric("Scheduling Benefit",    f"{avg_reduction:.1f}%","Peak load reduction")
 
     st.divider()
-    col_l, col_r = st.columns([3, 2])
+    col_a, col_b = st.columns([3, 2])
 
-    # ── Active Alerts ──
-    with col_l:
+    with col_a:
         st.subheader("🚨 Active Grid Alerts")
-        crit = transformers[transformers["status"]=="Critical"]
-        warn = transformers[transformers["status"]=="Warning"]
-        for _, r in crit.iterrows():
-            st.markdown(f"""<div class="alert-red">
-                <b>🔴 CRITICAL — {r['transformer_id']} ({r['zone']})</b><br>
-                Load at <b>{r['utilization_pct']}%</b> of rated capacity ({r['current_peak_load_kw']:.0f} / {r['rated_capacity_kw']} kW).
-                Immediate scheduling intervention recommended.
-            </div>""", unsafe_allow_html=True)
-        for _, r in warn.iterrows():
-            st.markdown(f"""<div class="alert-amber">
-                <b>🟡 WARNING — {r['transformer_id']} ({r['zone']})</b><br>
-                Load at <b>{r['utilization_pct']}%</b> of rated capacity.
-                Monitor and pre-emptively schedule off-peak charging.
-            </div>""", unsafe_allow_html=True)
-        if len(crit) == 0 and len(warn) == 0:
-            st.markdown('<div class="alert-green">✅ All transformers operating normally</div>',
-                        unsafe_allow_html=True)
+        crit = transformers[transformers["utilization_pct"] >= 90].sort_values("utilization_pct", ascending=False)
+        warn = transformers[transformers["utilization_pct"].between(75, 90)]
+        if len(crit)==0 and len(warn)==0:
+            st.success("✅ All transformers operating within safe limits.")
+        for _, r in crit.head(3).iterrows():
+            st.error(f"🔴 **CRITICAL — {r['transformer_id']} ({r['zone']})**  \n"
+                     f"Load at **{r['utilization_pct']:.0f}%** of {r['rated_capacity_kw']:.0f} kW. "
+                     f"Immediate scheduling intervention recommended.")
+        for _, r in warn.head(2).iterrows():
+            st.warning(f"🟡 **WARNING — {r['transformer_id']} ({r['zone']})**  \n"
+                       f"Load at **{r['utilization_pct']:.0f}%** capacity. "
+                       f"Pre-emptive off-peak scheduling recommended.")
 
-    # ── Zone Health Table ──
-    with col_r:
-        st.subheader("Zone Health Summary")
+    with col_b:
+        st.subheader("Zone Health")
+        tr_z  = transformers.groupby("zone")["utilization_pct"].mean()
+        ev_z  = ev_counts[ev_counts["year"]==2026].set_index("zone")["ev_count"]
+        sc_z  = sched_compare.set_index("zone")["peak_reduction_pct"]
         for zone in ZONES:
-            zt  = transformers[transformers["zone"]==zone]
-            avg = zt["utilization_pct"].mean()
-            evs = ev_counts[(ev_counts["zone"]==zone)&(ev_counts["year"]==2026)]["ev_count"].max()
-            sc  = sched_compare[sched_compare["zone"]==zone]["peak_reduction_pct"].values[0]
-            color = "#EF4444" if avg >= 85 else "#F59E0B" if avg >= 70 else "#22C55E"
-            st.markdown(f"""
-            <div style='display:flex;align-items:center;justify-content:space-between;
-                         padding:8px 12px;background:#1E293B;border-radius:8px;margin:4px 0;
-                         border-left:3px solid {color}'>
-              <span style='color:#F1F5F9;font-weight:600'>{zone}</span>
-              <span style='color:{color};font-weight:700'>{avg:.0f}%</span>
-              <span style='color:#94A3B8;font-size:12px'>{evs:,} EVs</span>
-              <span style='color:#22C55E;font-size:12px'>↓{sc:.0f}% if scheduled</span>
-            </div>""", unsafe_allow_html=True)
+            util  = tr_z.get(zone, 0)
+            evs   = int(ev_z.get(zone, 0))
+            reduc = sc_z.get(zone, 0)
+            color = "#EF4444" if util>=85 else "#F59E0B" if util>=70 else "#22C55E"
+            icon  = "🔴" if util>=85 else "🟡" if util>=70 else "🟢"
+            st.markdown(
+                f"{icon} **{zone}** — "
+                f"<span style='color:{color};font-weight:700'>{util:.0f}%</span> · "
+                f"{evs:,} EVs · "
+                f"<span style='color:#22C55E'>↓{reduc:.0f}% if scheduled</span>",
+                unsafe_allow_html=True)
+            st.progress(min(int(util), 100))
 
     st.divider()
-
-    # ── EV Growth Chart ──
     st.subheader("📈 EV Adoption Growth — All Zones (2023–2026)")
     ev_plot = ev_counts.copy()
     ev_plot["date"] = pd.to_datetime(
-        ev_plot["year"].astype(str) + "-" + ev_plot["month"].astype(str) + "-01")
+        ev_plot["year"].astype(str) + "-" + ev_plot["month"].astype(str).str.zfill(2) + "-01")
     fig_ev = go.Figure()
     for zone in ZONES:
-        zd = ev_plot[ev_plot["zone"]==zone]
+        zd = ev_plot[ev_plot["zone"]==zone].sort_values("date")
         fig_ev.add_trace(go.Scatter(
-            x=zd["date"], y=zd["ev_count"],
-            name=zone, line=dict(color=ZONE_COLORS[zone], width=2),
-            fill="tozeroy", fillcolor=ZONE_COLORS[zone].replace(")", ",0.05)").replace("rgb","rgba"),
-        ))
-    fig_ev.update_layout(
-        plot_bgcolor="#1E293B", paper_bgcolor="#0F172A",
-        font_color="#94A3B8", height=320,
-        xaxis=dict(gridcolor="#334155"), yaxis=dict(gridcolor="#334155"),
-        legend=dict(bgcolor="#1E293B", bordercolor="#334155"),
-        margin=dict(l=0,r=0,t=10,b=0),
-    )
+            x=zd["date"], y=zd["ev_count"], name=zone,
+            line=dict(color=ZONE_COLORS[zone], width=2)))
+    fig_ev.update_layout(height=320, **PLOT_LAYOUT)
     st.plotly_chart(fig_ev, use_container_width=True)
 
 
-# ═══════════════════════════════════════════════════════════════
-# PAGE 2 — DEMAND FORECAST
-# ═══════════════════════════════════════════════════════════════
+# ═══════════════════════ PAGE 2 — DEMAND FORECAST ═══════════════════════
 elif "Forecast" in page:
     st.title("📈 EV Charging Demand Forecast")
-    st.caption("48-hour AI predictions per zone · Gradient Boosting model")
+    st.caption("48-hour AI predictions · Gradient Boosting model · Per zone")
     st.divider()
 
     zone_sel = st.selectbox("Select Zone", ZONES)
     zf = forecast[forecast["zone"]==zone_sel].copy()
     zf["dt"] = pd.to_datetime(zf["forecast_datetime"])
+    tr_cap = float(transformers[transformers["zone"]==zone_sel]["rated_capacity_kw"].max())
+    peak   = float(zf["predicted_load_kw"].max())
+    util   = peak / tr_cap * 100
 
-    # Risk banner
-    peak = zf["predicted_load_kw"].max()
-    tr_cap = transformers[transformers["zone"]==zone_sel]["rated_capacity_kw"].max()
-    util_pct = peak / tr_cap * 100
-    if util_pct >= 90:
-        st.markdown(f'<div class="alert-red">🔴 <b>CRITICAL</b> — Predicted peak of <b>{peak:.0f} kW</b> will hit {util_pct:.0f}% of transformer capacity. Immediate scheduling action needed.</div>', unsafe_allow_html=True)
-    elif util_pct >= 80:
-        st.markdown(f'<div class="alert-amber">🟡 <b>WARNING</b> — Predicted peak of <b>{peak:.0f} kW</b> approaches {util_pct:.0f}% capacity. Pre-emptive scheduling recommended.</div>', unsafe_allow_html=True)
-    else:
-        st.markdown(f'<div class="alert-green">✅ Load forecast within safe limits for {zone_sel}.</div>', unsafe_allow_html=True)
+    if util >= 90:   st.error(f"🔴 **CRITICAL** — Peak {peak:.0f} kW = {util:.0f}% of capacity. Act now.")
+    elif util >= 80: st.warning(f"🟡 **WARNING** — Peak {peak:.0f} kW = {util:.0f}% capacity. Schedule off-peak.")
+    else:            st.success(f"✅ Load forecast safe for {zone_sel}.")
 
-    # Metrics
     c1,c2,c3,c4 = st.columns(4)
-    c1.metric("Predicted Peak",   f"{peak:.0f} kW",      f"{util_pct:.0f}% of capacity")
-    c2.metric("Transformer Cap",  f"{tr_cap:.0f} kW",    zone_sel)
-    c3.metric("Peak Risk Hours",  f"{(zf['is_peak_risk']==1).sum()}h",  "in next 48h")
-    c4.metric("Safe Hours",       f"{(zf['is_peak_risk']==0).sum()}h",  "of 48")
+    c1.metric("Predicted Peak",  f"{peak:.0f} kW", f"{util:.0f}% of capacity")
+    c2.metric("Transformer Cap", f"{tr_cap:.0f} kW", zone_sel)
+    c3.metric("Peak Risk Hours", f"{int((zf['is_peak_risk']==1).sum())}h", "in next 48h")
+    c4.metric("Safe Hours",      f"{int((zf['is_peak_risk']==0).sum())}h", "of 48")
 
     st.divider()
-
-    # ── Forecast Chart ──
     st.subheader(f"48-Hour Load Forecast — {zone_sel}")
-    fig = go.Figure()
     color = ZONE_COLORS[zone_sel]
-
-    # Confidence band
+    fig = go.Figure()
     fig.add_trace(go.Scatter(
-        x=pd.concat([zf["dt"], zf["dt"][::-1]]),
-        y=pd.concat([zf["upper_bound_kw"], zf["lower_bound_kw"][::-1]]),
-        fill="toself", fillcolor=color.replace("#","rgba(").replace("EF","239,").replace("F5","245,")+"0.12)",
-        line=dict(color="rgba(0,0,0,0)"), name="Confidence band", showlegend=True,
-    ))
-    # Forecast line
+        x=list(zf["dt"])+list(zf["dt"][::-1]),
+        y=list(zf["upper_bound_kw"])+list(zf["lower_bound_kw"][::-1]),
+        fill="toself", fillcolor="rgba(99,102,241,0.12)",
+        line=dict(color="rgba(0,0,0,0)"), name="Confidence band"))
     fig.add_trace(go.Scatter(
-        x=zf["dt"], y=zf["predicted_load_kw"],
-        name="Predicted load", line=dict(color=color, width=2.5, dash="dot"),
-    ))
-    # Capacity lines
+        x=zf["dt"], y=zf["predicted_load_kw"], name="Predicted load",
+        line=dict(color=color, width=2.5, dash="dot")))
     fig.add_hline(y=tr_cap*0.80, line_dash="dash", line_color="#F59E0B",
-                  annotation_text="80% Warning", annotation_position="top right")
+                  annotation_text="80% warning", annotation_font_color="#F59E0B")
     fig.add_hline(y=tr_cap*0.90, line_dash="dash", line_color="#EF4444",
-                  annotation_text="90% Critical", annotation_position="top right")
-    # Evening shading
-    for i in range(2):
-        base = zf["dt"].iloc[0].replace(hour=0, minute=0) + pd.Timedelta(days=i)
-        fig.add_vrect(x0=base+pd.Timedelta(hours=18), x1=base+pd.Timedelta(hours=22),
-                      fillcolor="rgba(239,68,68,0.07)", line_width=0,
-                      annotation_text="Evening peak" if i==0 else "",
-                      annotation_position="top left")
-
-    fig.update_layout(
-        plot_bgcolor="#1E293B", paper_bgcolor="#0F172A", font_color="#94A3B8",
-        height=380, xaxis=dict(gridcolor="#334155"), yaxis=dict(gridcolor="#334155", title="Load (kW)"),
-        legend=dict(bgcolor="#1E293B", bordercolor="#334155"),
-        margin=dict(l=0,r=0,t=10,b=0),
-    )
+                  annotation_text="90% critical", annotation_font_color="#EF4444")
+    fig.update_layout(height=380, yaxis_title="Load (kW)", xaxis_title="Date / Hour", **PLOT_LAYOUT)
     st.plotly_chart(fig, use_container_width=True)
 
     st.divider()
+    col_l, col_r = st.columns(2)
 
-    # ── All Zones Side-by-side ──
-    st.subheader("Peak Load — All Zones Compared")
-    peak_by_zone = forecast.groupby("zone")["predicted_load_kw"].max().reset_index()
-    cap_by_zone  = transformers.groupby("zone")["rated_capacity_kw"].max().reset_index()
-    comp = peak_by_zone.merge(cap_by_zone, on="zone")
-    comp["util_pct"] = (comp["predicted_load_kw"] / comp["rated_capacity_kw"] * 100).round(1)
-    comp["color"]    = comp["zone"].map(ZONE_COLORS)
-    comp = comp.sort_values("util_pct", ascending=False)
+    with col_l:
+        st.subheader("All Zones — Peak Utilisation")
+        pz = forecast.groupby("zone")["predicted_load_kw"].max().reset_index()
+        cz = transformers.groupby("zone")["rated_capacity_kw"].max().reset_index()
+        comp = pz.merge(cz, on="zone")
+        comp["util_pct"] = (comp["predicted_load_kw"]/comp["rated_capacity_kw"]*100).round(1)
+        comp = comp.sort_values("util_pct", ascending=True)
+        fig2 = go.Figure(go.Bar(
+            y=comp["zone"], x=comp["util_pct"], orientation="h",
+            marker_color=[ZONE_COLORS[z] for z in comp["zone"]],
+            text=[f"{u:.0f}%" for u in comp["util_pct"]], textposition="outside"))
+        fig2.add_vline(x=80, line_dash="dash", line_color="#F59E0B")
+        fig2.add_vline(x=90, line_dash="dash", line_color="#EF4444")
+        fig2.update_layout(height=300, xaxis_title="Peak utilisation %", xaxis_range=[0,115], **PLOT_LAYOUT)
+        st.plotly_chart(fig2, use_container_width=True)
 
-    fig2 = go.Figure()
-    fig2.add_trace(go.Bar(
-        x=comp["zone"], y=comp["rated_capacity_kw"],
-        name="Rated capacity", marker_color="#1E3A5F", marker_line_width=0,
-    ))
-    fig2.add_trace(go.Bar(
-        x=comp["zone"], y=comp["predicted_load_kw"],
-        name="Predicted peak", marker_color=[ZONE_COLORS[z] for z in comp["zone"]],
-        text=[f"{u:.0f}%" for u in comp["util_pct"]],
-        textposition="outside", textfont=dict(color="#F1F5F9"),
-    ))
-    fig2.add_hline(y=comp["rated_capacity_kw"].mean()*0.80,
-                   line_dash="dash", line_color="#F59E0B", annotation_text="Avg 80% limit")
-    fig2.update_layout(
-        barmode="overlay", plot_bgcolor="#1E293B", paper_bgcolor="#0F172A",
-        font_color="#94A3B8", height=350,
-        xaxis=dict(gridcolor="#334155"), yaxis=dict(gridcolor="#334155", title="kW"),
-        legend=dict(bgcolor="#1E293B"), margin=dict(l=0,r=0,t=10,b=0),
-    )
-    st.plotly_chart(fig2, use_container_width=True)
-
-    # Hourly heatmap
-    st.subheader("Demand Heatmap — Hour × Zone")
-    pivot = forecast.groupby(["zone","hour_of_day"])["predicted_load_kw"].mean().unstack()
-    fig3  = px.imshow(pivot, color_continuous_scale="RdYlGn_r",
-                      labels=dict(x="Hour", y="Zone", color="kW"),
-                      aspect="auto")
-    fig3.update_layout(
-        plot_bgcolor="#1E293B", paper_bgcolor="#0F172A", font_color="#94A3B8",
-        height=280, margin=dict(l=0,r=0,t=10,b=0),
-    )
-    st.plotly_chart(fig3, use_container_width=True)
+    with col_r:
+        st.subheader("Demand Heatmap — Hour × Zone")
+        pivot = forecast.groupby(["zone","hour_of_day"])["predicted_load_kw"].mean().unstack()
+        pivot = pivot.reindex(ZONES)
+        fig3 = px.imshow(pivot, color_continuous_scale="RdYlGn_r",
+                         labels=dict(x="Hour", y="Zone", color="kW"), aspect="auto")
+        fig3.update_layout(height=300, **PLOT_LAYOUT)
+        st.plotly_chart(fig3, use_container_width=True)
 
 
-# ═══════════════════════════════════════════════════════════════
-# PAGE 3 — CHARGING SCHEDULER
-# ═══════════════════════════════════════════════════════════════
+# ══════════════════════ PAGE 3 — CHARGING SCHEDULER ══════════════════════
 elif "Scheduler" in page:
     st.title("🕐 Smart Charging Scheduler")
-    st.caption("AI-optimised load shifting · Grid-aware recommendations")
+    st.caption("AI-optimised load shifting · Grid-aware · 100% energy preserved")
     st.divider()
-
-    # Summary KPIs
-    total_saved  = sched_compare["peak_reduction_kw"].sum()
-    avg_reduc    = sched_compare["peak_reduction_pct"].mean()
-    zones_fixed  = (sched_compare["hours_over_limit_optimised"]==0).sum()
-    total_energy = sched_compare["total_ev_energy_kwh"].sum()
 
     c1,c2,c3,c4 = st.columns(4)
-    c1.metric("Total Peak Saved",     f"{total_saved:.0f} kW",     "Across all zones")
-    c2.metric("Avg Peak Reduction",   f"{avg_reduc:.1f}%",         "vs unmanaged")
-    c3.metric("Zones Fully Fixed",    f"{zones_fixed}/6",          "0 overload hours")
-    c4.metric("Energy Preserved",     "100%",                       "Load shifted, not lost")
+    c1.metric("Total Peak Saved",   f"{sched_compare['peak_reduction_kw'].sum():.0f} kW", "All zones")
+    c2.metric("Avg Peak Reduction", f"{sched_compare['peak_reduction_pct'].mean():.1f}%", "vs unmanaged")
+    c3.metric("Zones Fully Fixed",  f"{int((sched_compare['hours_over_limit_optimised']==0).sum())} / 6", "0 overload hrs")
+    c4.metric("Energy Preserved",   "100%", "Shifted, not removed")
 
     st.divider()
-
-    # Before / After bar chart
-    st.subheader("Before vs After Scheduling — All Zones")
-    fig_ba = go.Figure()
+    st.subheader("Before vs After — Peak Load All Zones")
     sc = sched_compare.sort_values("peak_reduction_pct", ascending=False)
-    fig_ba.add_trace(go.Bar(
-        name="Before (unmanaged)", x=sc["zone"], y=sc["baseline_peak_load_kw"],
+    fig_ba = go.Figure()
+    fig_ba.add_trace(go.Bar(name="❌ Unmanaged", x=sc["zone"], y=sc["baseline_peak_load_kw"],
         marker_color="#EF4444", opacity=0.85,
-        text=[f"{v:.0f} kW" for v in sc["baseline_peak_load_kw"]],
-        textposition="outside", textfont=dict(color="#F87171"),
-    ))
-    fig_ba.add_trace(go.Bar(
-        name="After (optimised)", x=sc["zone"], y=sc["optimised_peak_load_kw"],
+        text=[f"{v:.0f} kW" for v in sc["baseline_peak_load_kw"]], textposition="outside"))
+    fig_ba.add_trace(go.Bar(name="✅ Optimised", x=sc["zone"], y=sc["optimised_peak_load_kw"],
         marker_color="#22C55E", opacity=0.85,
-        text=[f"↓{v:.0f}%" for v in sc["peak_reduction_pct"]],
-        textposition="outside", textfont=dict(color="#4ADE80"),
-    ))
-    fig_ba.update_layout(
-        barmode="group", plot_bgcolor="#1E293B", paper_bgcolor="#0F172A",
-        font_color="#94A3B8", height=350,
-        yaxis=dict(title="Peak Load (kW)", gridcolor="#334155"),
-        xaxis=dict(gridcolor="#334155"),
-        legend=dict(bgcolor="#1E293B", bordercolor="#334155"),
-        margin=dict(l=0,r=0,t=10,b=0),
-    )
+        text=[f"↓{v:.0f}%" for v in sc["peak_reduction_pct"]], textposition="outside"))
+    fig_ba.update_layout(barmode="group", height=360, yaxis_title="Peak Load (kW)", **PLOT_LAYOUT)
     st.plotly_chart(fig_ba, use_container_width=True)
 
     st.divider()
-
-    # Per-zone recommendation cards
-    st.subheader("📋 Zone Charging Recommendations")
+    st.subheader("Zone Recommendations")
     col1, col2 = st.columns(2)
     for i, zone in enumerate(ZONES):
-        col = col1 if i % 2 == 0 else col2
+        col = col1 if i%2==0 else col2
+        sc_row = sched_compare[sched_compare["zone"]==zone].iloc[0]
+        recs   = recommendations[recommendations["zone"]==zone].sort_values("recommendation_rank")
+        color  = ZONE_COLORS[zone]
+        over   = int(sc_row["hours_over_limit_baseline"])
+        risk   = "🔴 HIGH RISK" if over>3 else "🟡 MODERATE" if over>0 else "🟢 SAFE"
         with col:
-            sc_row  = sched_compare[sched_compare["zone"]==zone].iloc[0]
-            recs    = recommendations[recommendations["zone"]==zone].sort_values("recommendation_rank")
-            color   = ZONE_COLORS[zone]
-            risk    = "🔴 HIGH RISK" if sc_row["hours_over_limit_baseline"]>3 else \
-                      "🟡 MODERATE"  if sc_row["hours_over_limit_baseline"]>0 else "🟢 SAFE"
-
-            best_rec = recs.iloc[0] if len(recs) > 0 else None
-
-            st.markdown(f"""
-            <div class="card" style="border-left: 4px solid {color}">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-                <b style="color:{color};font-size:15px">{zone}</b>
-                <span style="font-size:12px">{risk}</span>
-              </div>
-              <div style="color:#94A3B8;font-size:12px;margin-bottom:8px">
-                ❌ Avoid: <b style="color:#F87171">18:00 – 22:00</b>
-                &nbsp;|&nbsp;
-                Peak reduction: <b style="color:#4ADE80">{sc_row['peak_reduction_pct']:.0f}%</b>
-              </div>
-              {'<div style="color:#94A3B8;font-size:12px">Best window: <b style="color:#22C55E">' + best_rec["window_start"] + " – " + best_rec["window_end"] + '</b> · ' + str(best_rec["evs_can_charge_simultaneously"]) + ' EVs simultaneously</div>' if best_rec is not None else ''}
-            </div>
-            """, unsafe_allow_html=True)
+            with st.container(border=True):
+                st.markdown(
+                    f"<span style='color:{color};font-size:16px;font-weight:700'>{zone}</span>"
+                    f"&nbsp;&nbsp;<span style='font-size:12px'>{risk}</span>",
+                    unsafe_allow_html=True)
+                st.caption(f"❌ Avoid: **18:00–22:00**  ·  Peak saved: **{sc_row['peak_reduction_pct']:.0f}%**")
+                if len(recs) > 0:
+                    r = recs.iloc[0]
+                    st.success(f"✅ Best window: **{r['window_start']} – {r['window_end']}**"
+                               f"  ({r['evs_can_charge_simultaneously']} EVs simultaneously)")
 
     st.divider()
-
-    # Hour-by-hour action grid for selected zone
     st.subheader("24-Hour Action Grid")
-    zone_sel2 = st.selectbox("Select Zone for Detail", ZONES, key="sched_zone")
+    zone_sel2 = st.selectbox("Select Zone", ZONES, key="sched_z")
     zg = sched_grid[sched_grid["zone"]==zone_sel2].sort_values("hour")
-
-    action_colors = {
-        "DELAY":      ("#3B1515","#EF4444"),
-        "CHARGE NOW": ("#0F2E1A","#22C55E"),
-        "SHIFT HERE": ("#1A2A3B","#38BDF8"),
-        "MONITOR":    ("#1E293B","#94A3B8"),
-    }
-
-    cols = st.columns(8)
-    for i, (_, row) in enumerate(zg.iterrows()):
-        bg, fg = action_colors.get(row["action"], ("#1E293B","#94A3B8"))
-        cols[i % 8].markdown(f"""
-        <div style="background:{bg};border:1px solid {fg};border-radius:8px;
-                    padding:8px 4px;text-align:center;margin:2px">
-          <div style="color:{fg};font-size:10px;font-weight:700">{row['time_label']}</div>
-          <div style="color:{fg};font-size:9px;margin-top:3px">{row['action']}</div>
-          <div style="color:#475569;font-size:9px">{row.get('grid_load_optimised_kw',0):.0f}kW</div>
-        </div>""", unsafe_allow_html=True)
-
-    # Legend
-    st.markdown("""
-    <div style="display:flex;gap:16px;margin-top:12px;flex-wrap:wrap">
-      <span style="color:#EF4444">🔴 DELAY — Avoid charging (evening peak)</span>
-      <span style="color:#22C55E">🟢 CHARGE NOW — Best window (off-peak)</span>
-      <span style="color:#38BDF8">🔵 SHIFT HERE — Load moved here from peak</span>
-      <span style="color:#94A3B8">⚪ MONITOR — Normal operation</span>
-    </div>""", unsafe_allow_html=True)
+    ACTION = {"DELAY":("🔴","#EF4444"),"CHARGE NOW":("🟢","#22C55E"),
+              "SHIFT HERE":("🔵","#38BDF8"),"MONITOR":("⚪","#64748B")}
+    for row_start in [0,6,12,18]:
+        cols = st.columns(6)
+        for j,(_,hr) in enumerate(zg[zg["hour"].between(row_start,row_start+5)].iterrows()):
+            icon, clr = ACTION.get(hr["action"],("⚪","#64748B"))
+            cols[j].markdown(
+                f"<div style='text-align:center;background:#1E293B;border:1px solid {clr};"
+                f"border-radius:8px;padding:8px 2px;margin:2px'>"
+                f"<div style='color:{clr};font-size:10px;font-weight:700'>{hr['time_label']}</div>"
+                f"<div style='font-size:14px'>{icon}</div>"
+                f"<div style='color:{clr};font-size:8px'>{hr['action']}</div>"
+                f"<div style='color:#475569;font-size:8px'>{hr.get('grid_load_optimised_kw',0):.0f}kW</div></div>",
+                unsafe_allow_html=True)
+    st.caption("🔴 DELAY  ·  🟢 CHARGE NOW  ·  🔵 SHIFT HERE  ·  ⚪ MONITOR")
 
 
-# ═══════════════════════════════════════════════════════════════
-# PAGE 4 — INFRASTRUCTURE PLANNER
-# ═══════════════════════════════════════════════════════════════
+# ════════════════════ PAGE 4 — INFRASTRUCTURE PLANNER ════════════════════
 elif "Infrastructure" in page:
     st.title("📍 Infrastructure Location Planner")
-    st.caption("AI-scored zone prioritisation · 3-factor weighted model")
+    st.caption("3-factor AI scoring · Demand 40% · Coverage Gap 30% · Grid Headroom 30%")
     st.divider()
 
-    # Priority ranking cards
     st.subheader("🏆 Zone Priority Ranking")
+    medals = ["🥇","🥈","🥉","4️⃣","5️⃣","6️⃣"]
     cols = st.columns(3)
     for i, (_, row) in enumerate(priority.iterrows()):
-        col = cols[i % 3]
-        color = ZONE_COLORS.get(row["zone"],"#888")
-        medal = ["🥇","🥈","🥉","4️⃣","5️⃣","6️⃣"][i]
-        with col:
-            st.markdown(f"""
-            <div class="card" style="border-top:3px solid {color}">
-              <div style="display:flex;justify-content:space-between;align-items:center">
-                <span style="font-size:20px">{medal}</span>
-                <span style="background:{color};color:white;border-radius:6px;
-                             padding:2px 10px;font-size:12px;font-weight:700">
-                  {row['composite_score']:.0f} pts
-                </span>
-              </div>
-              <div style="color:#F1F5F9;font-weight:700;font-size:15px;margin:8px 0 4px">{row['zone']}</div>
-              <div style="font-size:11px;color:#94A3B8">{row.get('priority_tier','—')}</div>
-              <hr style="border-color:#334155;margin:10px 0">
-              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;font-size:11px;text-align:center">
-                <div><div style="color:#3B82F6;font-weight:700">{row['demand_score']:.0f}</div><div style="color:#475569">Demand</div></div>
-                <div><div style="color:#F59E0B;font-weight:700">{row['coverage_gap_score']:.0f}</div><div style="color:#475569">Coverage</div></div>
-                <div><div style="color:#22C55E;font-weight:700">{row['grid_headroom_score']:.0f}</div><div style="color:#475569">Grid</div></div>
-              </div>
-            </div>""", unsafe_allow_html=True)
+        color = ZONE_COLORS.get(row["zone"], "#888")
+        with cols[i%3]:
+            with st.container(border=True):
+                st.markdown(
+                    f"{medals[i]}&nbsp;"
+                    f"<span style='color:{color};font-size:15px;font-weight:700'>{row['zone']}</span>"
+                    f"&nbsp;<span style='background:{color};color:white;border-radius:5px;"
+                    f"padding:2px 8px;font-size:12px'>{row['composite_score']:.0f} pts</span>",
+                    unsafe_allow_html=True)
+                st.caption(row.get("priority_tier",""))
+                a,b,c = st.columns(3)
+                a.metric("Demand",   f"{row['demand_score']:.0f}")
+                b.metric("Coverage", f"{row['coverage_gap_score']:.0f}")
+                c.metric("Grid",     f"{row['grid_headroom_score']:.0f}")
 
     st.divider()
+    col_ch, col_map = st.columns([2,3])
 
-    col_l, col_r = st.columns([2,3])
-
-    with col_l:
-        # Scoring breakdown chart
+    with col_ch:
         st.subheader("Score Breakdown")
-        fig_score = go.Figure()
         p = priority.sort_values("composite_score")
-        fig_score.add_trace(go.Bar(
-            y=p["zone"], x=p["demand_score"]*0.40, name="Demand (40%)",
-            orientation="h", marker_color="#3B82F6",
-        ))
-        fig_score.add_trace(go.Bar(
-            y=p["zone"], x=p["coverage_gap_score"]*0.30, name="Coverage (30%)",
-            orientation="h", marker_color="#F59E0B",
-        ))
-        fig_score.add_trace(go.Bar(
-            y=p["zone"], x=p["grid_headroom_score"]*0.30, name="Grid (30%)",
-            orientation="h", marker_color="#22C55E",
-        ))
-        fig_score.update_layout(
-            barmode="stack", plot_bgcolor="#1E293B", paper_bgcolor="#0F172A",
-            font_color="#94A3B8", height=320,
-            xaxis=dict(title="Weighted Score", gridcolor="#334155"),
-            yaxis=dict(gridcolor="#334155"),
-            legend=dict(bgcolor="#1E293B", orientation="h", y=-0.2),
-            margin=dict(l=0,r=0,t=10,b=0),
-        )
-        st.plotly_chart(fig_score, use_container_width=True)
+        fig_sc = go.Figure()
+        fig_sc.add_trace(go.Bar(y=p["zone"], x=(p["demand_score"]*0.40).round(1),
+            name="Demand (40%)", orientation="h", marker_color="#3B82F6"))
+        fig_sc.add_trace(go.Bar(y=p["zone"], x=(p["coverage_gap_score"]*0.30).round(1),
+            name="Coverage (30%)", orientation="h", marker_color="#F59E0B"))
+        fig_sc.add_trace(go.Bar(y=p["zone"], x=(p["grid_headroom_score"]*0.30).round(1),
+            name="Grid (30%)", orientation="h", marker_color="#22C55E"))
+        fig_sc.update_layout(barmode="stack", height=320, xaxis_title="Weighted Score",
+            legend=dict(orientation="h", y=-0.25, bgcolor="#0F172A"), **PLOT_LAYOUT)
+        st.plotly_chart(fig_sc, use_container_width=True)
 
-    with col_r:
-        # Scatter map
+    with col_map:
         st.subheader("Bengaluru Priority Map")
-        all_lats = stations["lat"].tolist() + locations["lat"].tolist()
-        all_lngs = stations["lng"].tolist() + locations["lng"].tolist()
-
-        fig_map = go.Figure()
-
-        # Existing stations
-        fig_map.add_trace(go.Scattergeo(
-            lat=stations["lat"], lon=stations["lng"],
-            mode="markers",
-            marker=dict(size=6, color="#22C55E", symbol="triangle-up"),
-            name="Existing stations",
-            hovertext=stations["station_id"],
-        ))
-
-        # Recommended locations
-        fig_map.add_trace(go.Scattergeo(
-            lat=locations["lat"], lon=locations["lng"],
-            mode="markers+text",
-            marker=dict(size=12, color="#FBBF24", symbol="star",
-                        line=dict(color="#92400E", width=1)),
-            name="Recommended new",
-            text=locations["zone_priority_rank"].apply(lambda x: f"P{x}"),
-            textfont=dict(size=8, color="white"),
-            hovertext=locations["location_name"],
-        ))
-
-        # Zone bubbles
-        zone_centers = {
-            "Koramangala":    (12.935, 77.624), "HSR Layout":     (12.911, 77.641),
-            "Whitefield":     (12.969, 77.749), "Electronic City": (12.839, 77.677),
-            "Hebbal":         (13.035, 77.597), "Indiranagar":    (12.978, 77.641),
+        ZONE_CENTERS = {
+            "Koramangala":(12.935,77.624), "HSR Layout":(12.911,77.641),
+            "Whitefield":(12.969,77.749),  "Electronic City":(12.839,77.677),
+            "Hebbal":(13.035,77.597),      "Indiranagar":(12.978,77.641),
         }
-        for zone, (lat, lng) in zone_centers.items():
-            pr = priority[priority["zone"]==zone]["priority_rank"].values[0]
-            sc = priority[priority["zone"]==zone]["composite_score"].values[0]
-            fig_map.add_trace(go.Scattergeo(
-                lat=[lat], lon=[lng], mode="markers",
-                marker=dict(size=sc*0.6, color=ZONE_COLORS[zone], opacity=0.25),
-                name=zone, showlegend=False,
-                hovertext=f"{zone} — Score: {sc:.0f}",
-            ))
-
+        fig_map = go.Figure()
+        for zone,(lat,lng) in ZONE_CENTERS.items():
+            pr_row = priority[priority["zone"]==zone]
+            sc   = float(pr_row["composite_score"].values[0]) if len(pr_row) else 50
+            rank = int(pr_row["priority_rank"].values[0])     if len(pr_row) else 6
+            fig_map.add_trace(go.Scattermapbox(
+                lat=[lat], lon=[lng], mode="markers+text",
+                marker=dict(size=sc*0.55, color=ZONE_COLORS[zone], opacity=0.7),
+                text=[f"#{rank}"], textfont=dict(size=11, color="white"),
+                name=zone, hovertext=f"{zone} — {sc:.0f} pts", hoverinfo="text"))
+        fig_map.add_trace(go.Scattermapbox(
+            lat=stations["lat"], lon=stations["lng"], mode="markers",
+            marker=dict(size=7, color="#22C55E"), name="Existing stations",
+            hovertext=stations["station_id"], hoverinfo="text"))
+        fig_map.add_trace(go.Scattermapbox(
+            lat=locations["lat"], lon=locations["lng"], mode="markers",
+            marker=dict(size=13, color="#FBBF24", symbol="star"),
+            name="⭐ Recommended", hovertext=locations["location_name"], hoverinfo="text"))
         fig_map.update_layout(
-            geo=dict(
-                scope="asia",
-                center=dict(lat=12.97, lon=77.67),
-                projection_scale=150,
-                showland=True, landcolor="#1E293B",
-                showocean=True, oceancolor="#0F172A",
-                showcountries=True, countrycolor="#334155",
-                showlakes=False,
-                bgcolor="#0F172A",
-            ),
-            paper_bgcolor="#0F172A", font_color="#94A3B8",
-            height=340, margin=dict(l=0,r=0,t=0,b=0),
-            legend=dict(bgcolor="#1E293B", bordercolor="#334155", x=0, y=1),
-        )
+            mapbox=dict(style="carto-darkmatter",
+                        center=dict(lat=12.97, lon=77.67), zoom=10.5),
+            height=330, paper_bgcolor="#0F172A", font_color="#94A3B8",
+            legend=dict(bgcolor="#1E293B", bordercolor="#334155", x=0, y=1, font=dict(size=10)),
+            margin=dict(l=0,r=0,t=0,b=0))
         st.plotly_chart(fig_map, use_container_width=True)
 
     st.divider()
-
-    # Recommended locations table
     st.subheader("📋 Specific Location Recommendations")
-    zone_filter = st.selectbox("Filter by Zone", ["All Zones"] + ZONES, key="infra_zone")
-    show_locs = locations if zone_filter == "All Zones" else locations[locations["zone"]==zone_filter]
-
-    for _, row in show_locs.iterrows():
+    zone_filter = st.selectbox("Filter by Zone", ["All Zones"]+ZONES)
+    show_locs = locations if zone_filter=="All Zones" else locations[locations["zone"]==zone_filter]
+    for _, row in show_locs.sort_values("zone_priority_rank").iterrows():
         color = ZONE_COLORS.get(row["zone"],"#888")
-        charger_badge = {
-            "DC Fast": "🔵", "AC+DC": "🟡", "AC Slow": "🟢"
-        }.get(row["recommended_charger_type"],"⚪")
-        st.markdown(f"""
-        <div class="card" style="border-left:4px solid {color}">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start">
-            <div>
-              <span style="color:{color};font-weight:700">📍 {row['location_name']}</span>
-              <span style="background:#1E3A5F;color:#93C5FD;border-radius:4px;
-                           padding:1px 8px;font-size:11px;margin-left:8px">{row['zone']}</span>
-            </div>
-            <span style="font-size:12px">{charger_badge} {row['recommended_charger_type']}</span>
-          </div>
-          <div style="color:#94A3B8;font-size:12px;margin-top:6px">
-            {row['rationale']}
-          </div>
-          <div style="display:flex;gap:20px;margin-top:8px;font-size:11px;color:#475569">
-            <span>🌐 {row['lat']:.4f}, {row['lng']:.4f}</span>
-            <span>📊 Zone score: <b style="color:#F1F5F9">{row['composite_score']:.0f}</b></span>
-            <span>⚡ Headroom: <b style="color:#22C55E">{row['grid_headroom_available_kw']:.0f} kW</b></span>
-            <span>🔋 Est. {row['estimated_daily_sessions']} sessions/day</span>
-          </div>
-        </div>""", unsafe_allow_html=True)
+        icons = {"DC Fast":"🔵","AC+DC":"🟡","AC Slow":"🟢"}
+        ctype = str(row.get("recommended_charger_type",""))
+        with st.container(border=True):
+            cl, cr = st.columns([4,1])
+            with cl:
+                st.markdown(f"<span style='color:{color};font-weight:700'>📍 {row['location_name']}</span>",
+                            unsafe_allow_html=True)
+                st.caption(row.get("rationale",""))
+            with cr:
+                st.markdown(f"{icons.get(ctype,'⚪')} **{ctype}**  \n"
+                            f"Score: **{row['composite_score']:.0f}**")
+            st.caption(f"📌 {row['lat']:.4f}, {row['lng']:.4f}  ·  "
+                       f"⚡ {row['grid_headroom_available_kw']:.0f} kW headroom  ·  "
+                       f"~{row['estimated_daily_sessions']} sessions/day")
 
     st.divider()
-    st.subheader("📐 Baseline Comparison")
-    st.caption("AI scoring vs uniform placement (2 stations per zone regardless of need)")
-    comp_data = {
-        "Zone": ZONES,
-        "Uniform Placement": [2]*6,
-        "AI Recommended": priority.sort_values("zone").set_index("zone").loc[ZONES, "priority_rank"].apply(lambda r: 4-min(r,3)).tolist(),
-        "Priority Score": priority.sort_values("zone").set_index("zone").loc[ZONES, "composite_score"].tolist(),
-    }
-    comp_df = pd.DataFrame(comp_data)
-    st.dataframe(comp_df.style.background_gradient(subset=["Priority Score"], cmap="RdYlGn"),
-                 use_container_width=True, hide_index=True)
+    st.subheader("📐 AI vs Uniform Placement Baseline")
+    comp_rows = []
+    for zone in ZONES:
+        pr = priority[priority["zone"]==zone]
+        sc = float(pr["composite_score"].values[0]) if len(pr) else 50
+        ai = 3 if sc>=65 else 2 if sc>=45 else 1
+        comp_rows.append({"Zone":zone,"Uniform (2 per zone)":2,"AI Recommended":ai,
+                          "Priority Score":f"{sc:.0f}","Difference":f"{ai-2:+d}"})
+    st.dataframe(pd.DataFrame(comp_rows), use_container_width=True, hide_index=True)
