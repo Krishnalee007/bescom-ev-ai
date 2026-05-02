@@ -315,8 +315,9 @@ elif "Infrastructure" in page:
             name="Coverage (30%)", orientation="h", marker_color="#F59E0B"))
         fig_sc.add_trace(go.Bar(y=p["zone"], x=(p["grid_headroom_score"]*0.30).round(1),
             name="Grid (30%)", orientation="h", marker_color="#22C55E"))
+        PLOT_LAYOUT_NO_LEGEND = {k: v for k, v in PLOT_LAYOUT.items() if k != "legend"}
         fig_sc.update_layout(barmode="stack", height=320, xaxis_title="Weighted Score",
-            legend=dict(orientation="h", y=-0.25, bgcolor="#0F172A"), **PLOT_LAYOUT)
+            legend=dict(orientation="h", y=-0.25, bgcolor="#0F172A"), **PLOT_LAYOUT_NO_LEGEND)
         st.plotly_chart(fig_sc, use_container_width=True)
 
     with col_map:
