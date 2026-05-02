@@ -1,0 +1,2 @@
+zone,recommendation_rank,window_start,window_end,duration_hours,avg_grid_load_kw,available_headroom_kw,evs_can_charge_simultaneously,recommendation,avoid_hours
+Electronic City,1,13:00,13:59,1,893.8,330.7,33,"⚡ Acceptable — moderate load, limited headroom",18:00–22:00 (residential peak)

@@ -1,0 +1,7 @@
+zone,demand_score,ev_count_2026,annual_growth_rate_pct,sessions_per_charger,coverage_gap_score,evs_per_charger,total_chargers,avg_gap_between_stations_km,grid_headroom_score,total_headroom_kw,new_50kw_chargers_supportable,avg_utilization_pct,composite_score,priority_rank,priority_tier
+Koramangala,85.0,2200,34.0,8.8,54.6,68.8,32,1.33,44.6,-848.9,-16,96.0,63.8,1,Priority 2 — Plan within 6 months
+Whitefield,59.4,2000,36.0,9.8,71.4,55.6,36,1.98,48.7,-774.1,-15,99.0,59.8,2,Priority 2 — Plan within 6 months
+Electronic City,21.0,1100,28.0,8.9,31.6,39.3,28,1.63,100.0,32.9,0,90.5,47.9,3,Priority 2 — Plan within 6 months
+Indiranagar,73.4,1700,31.0,9.0,50.0,77.3,22,1.03,0.0,-1503.7,-30,99.0,44.4,4,Priority 3 — Monitor and review
+HSR Layout,40.6,1400,30.0,8.3,50.9,63.6,22,1.39,16.1,-1265.0,-25,99.0,36.3,5,Priority 3 — Monitor and review
+Hebbal,6.4,880,26.0,7.3,22.5,40.0,22,1.44,58.9,-615.2,-12,99.0,27.0,6,Priority 3 — Monitor and review

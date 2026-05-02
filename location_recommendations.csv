@@ -1,0 +1,15 @@
+zone,zone_priority_rank,composite_score,location_name,lat,lng,recommended_charger_type,rationale,priority_tier,estimated_daily_sessions,grid_headroom_available_kw
+Koramangala,1,63.8,Koramangala 4th Block Junction,12.9322,77.6195,DC Fast,"High EV density, no station within 800m",Priority 2 — Plan within 6 months,10,-849.0
+Koramangala,1,63.8,Koramangala Forum Mall Parking,12.934,77.6101,AC+DC,"High dwell time, weekend peak demand",Priority 2 — Plan within 6 months,10,-849.0
+Koramangala,1,63.8,Koramangala 1st Block Metro Feeder,12.941,77.627,DC Fast,"Transit hub, 1.2km gap from nearest station",Priority 2 — Plan within 6 months,10,-849.0
+Whitefield,2,59.8,ITPL Main Gate Area,12.9855,77.7272,DC Fast,Highest EV density growth corridor,Priority 2 — Plan within 6 months,11,-774.0
+Whitefield,2,59.8,Whitefield Hope Farm Junction,12.9698,77.7499,DC Fast,"Traffic bottleneck, no station in 1.5km",Priority 2 — Plan within 6 months,11,-774.0
+Whitefield,2,59.8,Varthur Road Tech Park Strip,12.9405,77.7275,AC+DC,"Underserved corridor, high daily traffic",Priority 2 — Plan within 6 months,11,-774.0
+Electronic City,3,47.9,Electronic City Phase 1 Gate,12.8445,77.6769,DC Fast,"Largest tech park cluster, shift charge potential",Priority 2 — Plan within 6 months,10,33.0
+Electronic City,3,47.9,Neeladri Road Residential Belt,12.833,77.665,AC Slow,"Residential EV growth, off-peak charging fit",Priority 2 — Plan within 6 months,10,33.0
+Indiranagar,4,44.4,Indiranagar 100 Feet Road,12.9784,77.6408,DC Fast,"High-frequency EV zone, station utilisation at 90%",Priority 3 — Monitor and review,10,-1504.0
+Indiranagar,4,44.4,CMH Road Parking Complex,12.975,77.637,AC+DC,"Weekend peak demand, existing station overloaded",Priority 3 — Monitor and review,10,-1504.0
+HSR Layout,5,36.3,HSR Sector 2 Commercial Hub,12.9118,77.642,DC Fast,"Growing EV corridor, 900m coverage gap",Priority 3 — Monitor and review,9,-1265.0
+HSR Layout,5,36.3,HSR BDA Complex Parking,12.9201,77.638,AC Slow,"Long-dwell govt offices, overnight charging potential",Priority 3 — Monitor and review,9,-1265.0
+Hebbal,6,27.0,Hebbal Flyover Commercial Strip,13.038,77.592,DC Fast,"Gateway corridor, rapidly growing EV count",Priority 3 — Monitor and review,8,-615.0
+Hebbal,6,27.0,Hebbal Lake Side Retail,13.029,77.601,AC+DC,"Retail dwell zone, 1.1km gap in coverage",Priority 3 — Monitor and review,8,-615.0

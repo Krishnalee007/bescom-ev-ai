@@ -1,0 +1,7 @@
+zone,transformer_capacity_kw,predicted_peak_kw,peak_utilization_pct,risk_level,avoid_charging_hours,recommended_charging_hours,estimated_load_reduction_pct
+Electronic City,1200,2180.2,181.7,CRITICAL,"[18, 19, 20, 21, 22]","[0, 1, 2, 3, 4, 5]",78.2
+HSR Layout,650,2185.2,336.2,CRITICAL,"[0, 1, 2, 6, 7, 8, 9, 18, 19, 20, 21, 22, 23]","[3, 4, 5]",90.3
+Hebbal,600,1581.6,263.6,CRITICAL,"[8, 9, 18, 19, 20, 21, 22, 23]","[3, 4, 5]",89.9
+Indiranagar,750,2515.5,335.4,CRITICAL,"[0, 1, 2, 6, 7, 8, 9, 18, 19, 20, 21, 22, 23]","[3, 4, 5]",92.0
+Koramangala,900,3261.5,362.4,CRITICAL,"[0, 1, 2, 6, 7, 8, 9, 18, 19, 20, 21, 22, 23]","[3, 4, 5]",90.2
+Whitefield,1100,3190.6,290.1,CRITICAL,"[0, 1, 2, 6, 7, 8, 9, 18, 19, 20, 21, 22, 23]","[3, 4, 5]",88.4

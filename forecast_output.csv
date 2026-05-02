@@ -1,0 +1,289 @@
+zone,forecast_datetime,hour_of_day,day_label,predicted_load_kw,lower_bound_kw,upper_bound_kw,is_peak_risk,recommendation
+Electronic City,2026-01-01 00:00,0,Thursday,641.7,609.6,673.8,0,✅ Safe to charge
+Electronic City,2026-01-01 01:00,1,Thursday,632.7,601.0,664.3,0,✅ Safe to charge
+Electronic City,2026-01-01 02:00,2,Thursday,611.9,581.3,642.5,0,✅ Safe to charge
+Electronic City,2026-01-01 03:00,3,Thursday,269.4,256.0,282.9,0,✅ Safe to charge
+Electronic City,2026-01-01 04:00,4,Thursday,292.1,277.5,306.7,0,✅ Safe to charge
+Electronic City,2026-01-01 05:00,5,Thursday,410.6,390.1,431.2,0,✅ Safe to charge
+Electronic City,2026-01-01 06:00,6,Thursday,771.6,733.0,810.2,0,🔵 Moderate — monitor load
+Electronic City,2026-01-01 07:00,7,Thursday,800.7,760.7,840.8,1,⚠️ Delay charging — grid stress expected
+Electronic City,2026-01-01 08:00,8,Thursday,847.2,804.9,889.6,1,⚠️ Delay charging — grid stress expected
+Electronic City,2026-01-01 09:00,9,Thursday,882.0,837.9,926.1,1,⚠️ Delay charging — grid stress expected
+Electronic City,2026-01-01 10:00,10,Thursday,661.7,628.6,694.8,0,🔵 Moderate — monitor load
+Electronic City,2026-01-01 11:00,11,Thursday,649.6,617.1,682.0,0,🔵 Moderate — monitor load
+Electronic City,2026-01-01 12:00,12,Thursday,649.2,616.7,681.7,0,🔵 Moderate — monitor load
+Electronic City,2026-01-01 13:00,13,Thursday,629.6,598.1,661.1,0,🔵 Moderate — monitor load
+Electronic City,2026-01-01 14:00,14,Thursday,596.1,566.3,625.9,0,🔵 Moderate — monitor load
+Electronic City,2026-01-01 15:00,15,Thursday,572.0,543.4,600.6,0,🔵 Moderate — monitor load
+Electronic City,2026-01-01 16:00,16,Thursday,584.8,555.5,614.0,0,🔵 Moderate — monitor load
+Electronic City,2026-01-01 17:00,17,Thursday,626.5,595.2,657.9,0,🔵 Moderate — monitor load
+Electronic City,2026-01-01 18:00,18,Thursday,1680.9,1596.9,1765.0,1,⚠️ Delay charging — grid stress expected
+Electronic City,2026-01-01 19:00,19,Thursday,2026.8,1925.5,2128.1,1,⚠️ Delay charging — grid stress expected
+Electronic City,2026-01-01 20:00,20,Thursday,2100.2,1995.2,2205.2,1,⚠️ Delay charging — grid stress expected
+Electronic City,2026-01-01 21:00,21,Thursday,1872.9,1779.2,1966.5,1,⚠️ Delay charging — grid stress expected
+Electronic City,2026-01-01 22:00,22,Thursday,1469.2,1395.8,1542.7,1,⚠️ Delay charging — grid stress expected
+Electronic City,2026-01-01 23:00,23,Thursday,779.2,740.2,818.1,0,✅ Safe to charge
+Electronic City,2026-01-02 00:00,0,Friday,636.5,604.7,668.3,0,✅ Safe to charge
+Electronic City,2026-01-02 01:00,1,Friday,622.2,591.0,653.3,0,✅ Safe to charge
+Electronic City,2026-01-02 02:00,2,Friday,614.4,583.7,645.1,0,✅ Safe to charge
+Electronic City,2026-01-02 03:00,3,Friday,269.0,255.6,282.5,0,✅ Safe to charge
+Electronic City,2026-01-02 04:00,4,Friday,291.7,277.2,306.3,0,✅ Safe to charge
+Electronic City,2026-01-02 05:00,5,Friday,403.4,383.3,423.6,0,✅ Safe to charge
+Electronic City,2026-01-02 06:00,6,Friday,759.6,721.6,797.6,0,🔵 Moderate — monitor load
+Electronic City,2026-01-02 07:00,7,Friday,811.9,771.3,852.5,1,⚠️ Delay charging — grid stress expected
+Electronic City,2026-01-02 08:00,8,Friday,838.4,796.5,880.3,1,⚠️ Delay charging — grid stress expected
+Electronic City,2026-01-02 09:00,9,Friday,873.1,829.4,916.7,1,⚠️ Delay charging — grid stress expected
+Electronic City,2026-01-02 10:00,10,Friday,657.1,624.2,689.9,0,🔵 Moderate — monitor load
+Electronic City,2026-01-02 11:00,11,Friday,648.0,615.6,680.4,0,🔵 Moderate — monitor load
+Electronic City,2026-01-02 12:00,12,Friday,648.0,615.6,680.4,0,🔵 Moderate — monitor load
+Electronic City,2026-01-02 13:00,13,Friday,629.0,597.6,660.5,0,🔵 Moderate — monitor load
+Electronic City,2026-01-02 14:00,14,Friday,587.5,558.1,616.9,0,🔵 Moderate — monitor load
+Electronic City,2026-01-02 15:00,15,Friday,569.3,540.8,597.8,0,🔵 Moderate — monitor load
+Electronic City,2026-01-02 16:00,16,Friday,583.2,554.0,612.4,0,🔵 Moderate — monitor load
+Electronic City,2026-01-02 17:00,17,Friday,620.4,589.4,651.4,0,🔵 Moderate — monitor load
+Electronic City,2026-01-02 18:00,18,Friday,1632.7,1551.1,1714.4,1,⚠️ Delay charging — grid stress expected
+Electronic City,2026-01-02 19:00,19,Friday,1955.1,1857.3,2052.8,1,⚠️ Delay charging — grid stress expected
+Electronic City,2026-01-02 20:00,20,Friday,2180.2,2071.2,2289.2,1,⚠️ Delay charging — grid stress expected
+Electronic City,2026-01-02 21:00,21,Friday,1878.5,1784.6,1972.4,1,⚠️ Delay charging — grid stress expected
+Electronic City,2026-01-02 22:00,22,Friday,1520.8,1444.7,1596.8,1,⚠️ Delay charging — grid stress expected
+Electronic City,2026-01-02 23:00,23,Friday,792.0,752.4,831.6,0,✅ Safe to charge
+HSR Layout,2026-01-01 00:00,0,Thursday,636.5,604.7,668.3,0,✅ Safe to charge
+HSR Layout,2026-01-01 01:00,1,Thursday,635.4,603.6,667.2,0,✅ Safe to charge
+HSR Layout,2026-01-01 02:00,2,Thursday,605.4,575.1,635.6,0,✅ Safe to charge
+HSR Layout,2026-01-01 03:00,3,Thursday,190.5,180.9,200.0,0,✅ Safe to charge
+HSR Layout,2026-01-01 04:00,4,Thursday,201.0,191.0,211.1,0,✅ Safe to charge
+HSR Layout,2026-01-01 05:00,5,Thursday,249.6,237.2,262.1,0,✅ Safe to charge
+HSR Layout,2026-01-01 06:00,6,Thursday,609.2,578.7,639.6,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-01 07:00,7,Thursday,648.1,615.7,680.5,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-01 08:00,8,Thursday,660.7,627.7,693.8,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-01 09:00,9,Thursday,699.5,664.5,734.5,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-01 10:00,10,Thursday,371.3,352.8,389.9,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-01 11:00,11,Thursday,370.4,351.9,388.9,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-01 12:00,12,Thursday,367.8,349.4,386.2,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-01 13:00,13,Thursday,362.6,344.5,380.7,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-01 14:00,14,Thursday,345.3,328.1,362.6,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-01 15:00,15,Thursday,336.1,319.3,352.9,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-01 16:00,16,Thursday,349.3,331.8,366.8,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-01 17:00,17,Thursday,367.1,348.8,385.5,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-01 18:00,18,Thursday,1642.3,1560.2,1724.4,1,⚠️ Delay charging — grid stress expected
+HSR Layout,2026-01-01 19:00,19,Thursday,1967.8,1869.4,2066.2,1,⚠️ Delay charging — grid stress expected
+HSR Layout,2026-01-01 20:00,20,Thursday,2126.5,2020.2,2232.9,1,⚠️ Delay charging — grid stress expected
+HSR Layout,2026-01-01 21:00,21,Thursday,2007.1,1906.7,2107.4,1,⚠️ Delay charging — grid stress expected
+HSR Layout,2026-01-01 22:00,22,Thursday,1616.4,1535.6,1697.3,1,⚠️ Delay charging — grid stress expected
+HSR Layout,2026-01-01 23:00,23,Thursday,687.9,653.5,722.2,0,✅ Safe to charge
+HSR Layout,2026-01-02 00:00,0,Friday,604.3,574.1,634.5,0,✅ Safe to charge
+HSR Layout,2026-01-02 01:00,1,Friday,599.9,569.9,629.9,0,✅ Safe to charge
+HSR Layout,2026-01-02 02:00,2,Friday,603.0,572.9,633.2,0,✅ Safe to charge
+HSR Layout,2026-01-02 03:00,3,Friday,186.6,177.3,195.9,0,✅ Safe to charge
+HSR Layout,2026-01-02 04:00,4,Friday,197.1,187.3,207.0,0,✅ Safe to charge
+HSR Layout,2026-01-02 05:00,5,Friday,249.5,237.0,262.0,0,✅ Safe to charge
+HSR Layout,2026-01-02 06:00,6,Friday,586.6,557.2,615.9,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-02 07:00,7,Friday,626.8,595.5,658.1,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-02 08:00,8,Friday,669.0,635.6,702.5,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-02 09:00,9,Friday,683.3,649.1,717.5,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-02 10:00,10,Friday,370.4,351.9,388.9,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-02 11:00,11,Friday,377.8,358.9,396.7,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-02 12:00,12,Friday,382.7,363.6,401.9,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-02 13:00,13,Friday,377.8,358.9,396.7,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-02 14:00,14,Friday,357.0,339.2,374.9,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-02 15:00,15,Friday,347.6,330.2,364.9,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-02 16:00,16,Friday,357.1,339.2,374.9,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-02 17:00,17,Friday,380.5,361.5,399.5,0,🔵 Moderate — monitor load
+HSR Layout,2026-01-02 18:00,18,Friday,1695.0,1610.2,1779.7,1,⚠️ Delay charging — grid stress expected
+HSR Layout,2026-01-02 19:00,19,Friday,1958.9,1860.9,2056.8,1,⚠️ Delay charging — grid stress expected
+HSR Layout,2026-01-02 20:00,20,Friday,2185.2,2076.0,2294.5,1,⚠️ Delay charging — grid stress expected
+HSR Layout,2026-01-02 21:00,21,Friday,2012.5,1911.9,2113.2,1,⚠️ Delay charging — grid stress expected
+HSR Layout,2026-01-02 22:00,22,Friday,1632.3,1550.6,1713.9,1,⚠️ Delay charging — grid stress expected
+HSR Layout,2026-01-02 23:00,23,Friday,704.7,669.5,739.9,0,✅ Safe to charge
+Hebbal,2026-01-01 00:00,0,Thursday,436.1,414.3,457.9,0,✅ Safe to charge
+Hebbal,2026-01-01 01:00,1,Thursday,437.3,415.4,459.1,0,✅ Safe to charge
+Hebbal,2026-01-01 02:00,2,Thursday,431.8,410.2,453.4,0,✅ Safe to charge
+Hebbal,2026-01-01 03:00,3,Thursday,135.2,128.4,141.9,0,✅ Safe to charge
+Hebbal,2026-01-01 04:00,4,Thursday,144.4,137.2,151.6,0,✅ Safe to charge
+Hebbal,2026-01-01 05:00,5,Thursday,198.2,188.3,208.1,0,✅ Safe to charge
+Hebbal,2026-01-01 06:00,6,Thursday,465.0,441.7,488.2,0,🔵 Moderate — monitor load
+Hebbal,2026-01-01 07:00,7,Thursday,479.0,455.0,502.9,0,🔵 Moderate — monitor load
+Hebbal,2026-01-01 08:00,8,Thursday,510.1,484.6,535.6,0,🔵 Moderate — monitor load
+Hebbal,2026-01-01 09:00,9,Thursday,514.3,488.6,540.0,0,🔵 Moderate — monitor load
+Hebbal,2026-01-01 10:00,10,Thursday,304.8,289.6,320.1,0,🔵 Moderate — monitor load
+Hebbal,2026-01-01 11:00,11,Thursday,308.5,293.1,323.9,0,🔵 Moderate — monitor load
+Hebbal,2026-01-01 12:00,12,Thursday,304.8,289.6,320.1,0,🔵 Moderate — monitor load
+Hebbal,2026-01-01 13:00,13,Thursday,302.7,287.6,317.9,0,🔵 Moderate — monitor load
+Hebbal,2026-01-01 14:00,14,Thursday,284.6,270.4,298.8,0,🔵 Moderate — monitor load
+Hebbal,2026-01-01 15:00,15,Thursday,279.2,265.2,293.2,0,🔵 Moderate — monitor load
+Hebbal,2026-01-01 16:00,16,Thursday,281.0,267.0,295.1,0,🔵 Moderate — monitor load
+Hebbal,2026-01-01 17:00,17,Thursday,304.0,288.8,319.2,0,🔵 Moderate — monitor load
+Hebbal,2026-01-01 18:00,18,Thursday,1162.7,1104.5,1220.8,1,⚠️ Delay charging — grid stress expected
+Hebbal,2026-01-01 19:00,19,Thursday,1356.3,1288.5,1424.1,1,⚠️ Delay charging — grid stress expected
+Hebbal,2026-01-01 20:00,20,Thursday,1488.0,1413.6,1562.4,1,⚠️ Delay charging — grid stress expected
+Hebbal,2026-01-01 21:00,21,Thursday,1340.9,1273.9,1408.0,1,⚠️ Delay charging — grid stress expected
+Hebbal,2026-01-01 22:00,22,Thursday,1057.9,1005.1,1110.8,1,⚠️ Delay charging — grid stress expected
+Hebbal,2026-01-01 23:00,23,Thursday,508.2,482.8,533.6,0,✅ Safe to charge
+Hebbal,2026-01-02 00:00,0,Friday,434.0,412.3,455.7,0,✅ Safe to charge
+Hebbal,2026-01-02 01:00,1,Friday,436.4,414.6,458.2,0,✅ Safe to charge
+Hebbal,2026-01-02 02:00,2,Friday,422.5,401.3,443.6,0,✅ Safe to charge
+Hebbal,2026-01-02 03:00,3,Friday,138.9,131.9,145.8,0,✅ Safe to charge
+Hebbal,2026-01-02 04:00,4,Friday,148.3,140.9,155.7,0,✅ Safe to charge
+Hebbal,2026-01-02 05:00,5,Friday,198.1,188.2,208.1,0,✅ Safe to charge
+Hebbal,2026-01-02 06:00,6,Friday,459.8,436.8,482.7,0,🔵 Moderate — monitor load
+Hebbal,2026-01-02 07:00,7,Friday,473.4,449.8,497.1,0,🔵 Moderate — monitor load
+Hebbal,2026-01-02 08:00,8,Friday,498.8,473.8,523.7,0,🔵 Moderate — monitor load
+Hebbal,2026-01-02 09:00,9,Friday,509.4,483.9,534.9,0,🔵 Moderate — monitor load
+Hebbal,2026-01-02 10:00,10,Friday,305.4,290.1,320.7,0,🔵 Moderate — monitor load
+Hebbal,2026-01-02 11:00,11,Friday,302.0,286.9,317.1,0,🔵 Moderate — monitor load
+Hebbal,2026-01-02 12:00,12,Friday,305.6,290.3,320.9,0,🔵 Moderate — monitor load
+Hebbal,2026-01-02 13:00,13,Friday,302.6,287.5,317.7,0,🔵 Moderate — monitor load
+Hebbal,2026-01-02 14:00,14,Friday,300.4,285.4,315.5,0,🔵 Moderate — monitor load
+Hebbal,2026-01-02 15:00,15,Friday,290.0,275.5,304.5,0,🔵 Moderate — monitor load
+Hebbal,2026-01-02 16:00,16,Friday,302.9,287.8,318.0,0,🔵 Moderate — monitor load
+Hebbal,2026-01-02 17:00,17,Friday,316.6,300.8,332.4,0,🔵 Moderate — monitor load
+Hebbal,2026-01-02 18:00,18,Friday,1189.6,1130.1,1249.1,1,⚠️ Delay charging — grid stress expected
+Hebbal,2026-01-02 19:00,19,Friday,1359.6,1291.6,1427.6,1,⚠️ Delay charging — grid stress expected
+Hebbal,2026-01-02 20:00,20,Friday,1581.6,1502.5,1660.6,1,⚠️ Delay charging — grid stress expected
+Hebbal,2026-01-02 21:00,21,Friday,1408.0,1337.6,1478.4,1,⚠️ Delay charging — grid stress expected
+Hebbal,2026-01-02 22:00,22,Friday,1067.8,1014.4,1121.2,1,⚠️ Delay charging — grid stress expected
+Hebbal,2026-01-02 23:00,23,Friday,504.6,479.4,529.9,0,✅ Safe to charge
+Indiranagar,2026-01-01 00:00,0,Thursday,638.9,606.9,670.8,0,✅ Safe to charge
+Indiranagar,2026-01-01 01:00,1,Thursday,627.6,596.2,659.0,0,✅ Safe to charge
+Indiranagar,2026-01-01 02:00,2,Thursday,624.0,592.8,655.2,0,✅ Safe to charge
+Indiranagar,2026-01-01 03:00,3,Thursday,155.4,147.7,163.2,0,✅ Safe to charge
+Indiranagar,2026-01-01 04:00,4,Thursday,168.1,159.7,176.6,0,✅ Safe to charge
+Indiranagar,2026-01-01 05:00,5,Thursday,240.5,228.5,252.5,0,✅ Safe to charge
+Indiranagar,2026-01-01 06:00,6,Thursday,642.7,610.6,674.9,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-01 07:00,7,Thursday,654.7,622.0,687.4,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-01 08:00,8,Thursday,702.0,666.9,737.0,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-01 09:00,9,Thursday,700.9,665.9,736.0,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-01 10:00,10,Thursday,371.6,353.0,390.2,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-01 11:00,11,Thursday,390.2,370.7,409.7,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-01 12:00,12,Thursday,386.8,367.5,406.1,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-01 13:00,13,Thursday,376.0,357.2,394.8,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-01 14:00,14,Thursday,355.9,338.1,373.7,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-01 15:00,15,Thursday,347.5,330.1,364.8,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-01 16:00,16,Thursday,364.1,345.9,382.3,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-01 17:00,17,Thursday,404.9,384.7,425.2,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-01 18:00,18,Thursday,1923.3,1827.1,2019.5,1,⚠️ Delay charging — grid stress expected
+Indiranagar,2026-01-01 19:00,19,Thursday,2288.6,2174.2,2403.1,1,⚠️ Delay charging — grid stress expected
+Indiranagar,2026-01-01 20:00,20,Thursday,2415.0,2294.2,2535.7,1,⚠️ Delay charging — grid stress expected
+Indiranagar,2026-01-01 21:00,21,Thursday,2135.9,2029.1,2242.7,1,⚠️ Delay charging — grid stress expected
+Indiranagar,2026-01-01 22:00,22,Thursday,1712.2,1626.6,1797.8,1,⚠️ Delay charging — grid stress expected
+Indiranagar,2026-01-01 23:00,23,Thursday,725.2,689.0,761.5,0,✅ Safe to charge
+Indiranagar,2026-01-02 00:00,0,Friday,658.3,625.4,691.2,0,✅ Safe to charge
+Indiranagar,2026-01-02 01:00,1,Friday,644.6,612.4,676.9,0,✅ Safe to charge
+Indiranagar,2026-01-02 02:00,2,Friday,636.3,604.5,668.2,0,✅ Safe to charge
+Indiranagar,2026-01-02 03:00,3,Friday,188.7,179.3,198.2,0,✅ Safe to charge
+Indiranagar,2026-01-02 04:00,4,Friday,196.7,186.9,206.6,0,✅ Safe to charge
+Indiranagar,2026-01-02 05:00,5,Friday,260.6,247.6,273.7,0,✅ Safe to charge
+Indiranagar,2026-01-02 06:00,6,Friday,667.1,633.7,700.4,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-02 07:00,7,Friday,692.9,658.2,727.5,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-02 08:00,8,Friday,730.7,694.2,767.2,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-02 09:00,9,Friday,731.2,694.7,767.8,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-02 10:00,10,Friday,405.6,385.3,425.8,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-02 11:00,11,Friday,408.9,388.4,429.3,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-02 12:00,12,Friday,408.9,388.4,429.3,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-02 13:00,13,Friday,396.2,376.4,416.0,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-02 14:00,14,Friday,372.7,354.0,391.3,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-02 15:00,15,Friday,367.8,349.4,386.2,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-02 16:00,16,Friday,370.5,352.0,389.1,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-02 17:00,17,Friday,401.1,381.0,421.1,0,🔵 Moderate — monitor load
+Indiranagar,2026-01-02 18:00,18,Friday,1811.9,1721.3,1902.5,1,⚠️ Delay charging — grid stress expected
+Indiranagar,2026-01-02 19:00,19,Friday,2269.9,2156.4,2383.4,1,⚠️ Delay charging — grid stress expected
+Indiranagar,2026-01-02 20:00,20,Friday,2515.5,2389.8,2641.3,1,⚠️ Delay charging — grid stress expected
+Indiranagar,2026-01-02 21:00,21,Friday,2104.0,1998.8,2209.2,1,⚠️ Delay charging — grid stress expected
+Indiranagar,2026-01-02 22:00,22,Friday,1739.9,1652.9,1826.9,1,⚠️ Delay charging — grid stress expected
+Indiranagar,2026-01-02 23:00,23,Friday,733.5,696.9,770.2,0,✅ Safe to charge
+Koramangala,2026-01-01 00:00,0,Thursday,915.8,870.0,961.6,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-01 01:00,1,Thursday,906.3,861.0,951.6,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-01 02:00,2,Thursday,904.4,859.2,949.6,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-01 03:00,3,Thursday,275.8,262.0,289.6,0,✅ Safe to charge
+Koramangala,2026-01-01 04:00,4,Thursday,271.6,258.0,285.2,0,✅ Safe to charge
+Koramangala,2026-01-01 05:00,5,Thursday,360.4,342.4,378.5,0,✅ Safe to charge
+Koramangala,2026-01-01 06:00,6,Thursday,910.7,865.2,956.2,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-01 07:00,7,Thursday,941.4,894.4,988.5,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-01 08:00,8,Thursday,982.9,933.8,1032.1,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-01 09:00,9,Thursday,1003.2,953.1,1053.4,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-01 10:00,10,Thursday,528.4,501.9,554.8,0,🔵 Moderate — monitor load
+Koramangala,2026-01-01 11:00,11,Thursday,529.0,502.5,555.4,0,🔵 Moderate — monitor load
+Koramangala,2026-01-01 12:00,12,Thursday,529.0,502.5,555.4,0,🔵 Moderate — monitor load
+Koramangala,2026-01-01 13:00,13,Thursday,519.2,493.2,545.1,0,🔵 Moderate — monitor load
+Koramangala,2026-01-01 14:00,14,Thursday,497.6,472.7,522.5,0,🔵 Moderate — monitor load
+Koramangala,2026-01-01 15:00,15,Thursday,494.7,469.9,519.4,0,🔵 Moderate — monitor load
+Koramangala,2026-01-01 16:00,16,Thursday,512.9,487.3,538.6,0,🔵 Moderate — monitor load
+Koramangala,2026-01-01 17:00,17,Thursday,539.9,512.9,566.9,0,🔵 Moderate — monitor load
+Koramangala,2026-01-01 18:00,18,Thursday,2497.1,2372.2,2622.0,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-01 19:00,19,Thursday,3181.6,3022.5,3340.6,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-01 20:00,20,Thursday,3261.5,3098.4,3424.6,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-01 21:00,21,Thursday,2934.4,2787.7,3081.2,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-01 22:00,22,Thursday,2397.3,2277.4,2517.2,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-01 23:00,23,Thursday,1081.3,1027.2,1135.4,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-02 00:00,0,Friday,938.5,891.6,985.4,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-02 01:00,1,Friday,952.0,904.4,999.6,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-02 02:00,2,Friday,952.0,904.4,999.6,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-02 03:00,3,Friday,306.9,291.5,322.2,0,✅ Safe to charge
+Koramangala,2026-01-02 04:00,4,Friday,314.8,299.0,330.5,0,✅ Safe to charge
+Koramangala,2026-01-02 05:00,5,Friday,392.3,372.7,411.9,0,✅ Safe to charge
+Koramangala,2026-01-02 06:00,6,Friday,945.5,898.3,992.8,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-02 07:00,7,Friday,955.5,907.7,1003.2,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-02 08:00,8,Friday,1002.9,952.8,1053.0,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-02 09:00,9,Friday,1029.2,977.7,1080.6,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-02 10:00,10,Friday,554.4,526.7,582.1,0,🔵 Moderate — monitor load
+Koramangala,2026-01-02 11:00,11,Friday,557.6,529.7,585.5,0,🔵 Moderate — monitor load
+Koramangala,2026-01-02 12:00,12,Friday,558.4,530.5,586.3,0,🔵 Moderate — monitor load
+Koramangala,2026-01-02 13:00,13,Friday,547.8,520.4,575.2,0,🔵 Moderate — monitor load
+Koramangala,2026-01-02 14:00,14,Friday,518.2,492.3,544.1,0,🔵 Moderate — monitor load
+Koramangala,2026-01-02 15:00,15,Friday,517.1,491.2,542.9,0,🔵 Moderate — monitor load
+Koramangala,2026-01-02 16:00,16,Friday,522.2,496.1,548.4,0,🔵 Moderate — monitor load
+Koramangala,2026-01-02 17:00,17,Friday,547.8,520.4,575.2,0,🔵 Moderate — monitor load
+Koramangala,2026-01-02 18:00,18,Friday,2526.5,2400.2,2652.8,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-02 19:00,19,Friday,2987.6,2838.2,3137.0,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-02 20:00,20,Friday,3256.2,3093.4,3419.0,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-02 21:00,21,Friday,2934.2,2787.5,3080.9,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-02 22:00,22,Friday,2392.3,2272.6,2511.9,1,⚠️ Delay charging — grid stress expected
+Koramangala,2026-01-02 23:00,23,Friday,1024.3,973.1,1075.6,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-01 00:00,0,Thursday,900.9,855.9,946.0,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-01 01:00,1,Thursday,910.7,865.1,956.2,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-01 02:00,2,Thursday,878.3,834.4,922.2,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-01 03:00,3,Thursday,299.5,284.5,314.4,0,✅ Safe to charge
+Whitefield,2026-01-01 04:00,4,Thursday,320.5,304.5,336.6,0,✅ Safe to charge
+Whitefield,2026-01-01 05:00,5,Thursday,422.0,400.9,443.1,0,✅ Safe to charge
+Whitefield,2026-01-01 06:00,6,Thursday,941.5,894.5,988.6,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-01 07:00,7,Thursday,989.1,939.7,1038.6,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-01 08:00,8,Thursday,1055.0,1002.2,1107.7,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-01 09:00,9,Thursday,1088.2,1033.8,1142.6,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-01 10:00,10,Thursday,668.9,635.4,702.3,0,🔵 Moderate — monitor load
+Whitefield,2026-01-01 11:00,11,Thursday,666.8,633.4,700.1,0,🔵 Moderate — monitor load
+Whitefield,2026-01-01 12:00,12,Thursday,665.8,632.5,699.0,0,🔵 Moderate — monitor load
+Whitefield,2026-01-01 13:00,13,Thursday,660.6,627.5,693.6,0,🔵 Moderate — monitor load
+Whitefield,2026-01-01 14:00,14,Thursday,607.2,576.9,637.6,0,🔵 Moderate — monitor load
+Whitefield,2026-01-01 15:00,15,Thursday,600.1,570.1,630.1,0,🔵 Moderate — monitor load
+Whitefield,2026-01-01 16:00,16,Thursday,606.5,576.1,636.8,0,🔵 Moderate — monitor load
+Whitefield,2026-01-01 17:00,17,Thursday,662.7,629.6,695.8,0,🔵 Moderate — monitor load
+Whitefield,2026-01-01 18:00,18,Thursday,2324.7,2208.5,2440.9,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-01 19:00,19,Thursday,2841.5,2699.4,2983.5,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-01 20:00,20,Thursday,3075.6,2921.8,3229.3,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-01 21:00,21,Thursday,2695.6,2560.8,2830.4,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-01 22:00,22,Thursday,2179.2,2070.3,2288.2,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-01 23:00,23,Thursday,1083.5,1029.3,1137.6,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-02 00:00,0,Friday,907.4,862.0,952.8,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-02 01:00,1,Friday,911.6,866.0,957.1,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-02 02:00,2,Friday,911.3,865.7,956.8,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-02 03:00,3,Friday,343.0,325.9,360.2,0,✅ Safe to charge
+Whitefield,2026-01-02 04:00,4,Friday,364.1,345.9,382.3,0,✅ Safe to charge
+Whitefield,2026-01-02 05:00,5,Friday,467.3,443.9,490.7,0,✅ Safe to charge
+Whitefield,2026-01-02 06:00,6,Friday,964.6,916.4,1012.9,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-02 07:00,7,Friday,1020.8,969.7,1071.8,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-02 08:00,8,Friday,1083.5,1029.3,1137.7,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-02 09:00,9,Friday,1095.4,1040.6,1150.2,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-02 10:00,10,Friday,687.3,652.9,721.6,0,🔵 Moderate — monitor load
+Whitefield,2026-01-02 11:00,11,Friday,676.9,643.1,710.8,0,🔵 Moderate — monitor load
+Whitefield,2026-01-02 12:00,12,Friday,671.7,638.2,705.3,0,🔵 Moderate — monitor load
+Whitefield,2026-01-02 13:00,13,Friday,678.4,644.5,712.3,0,🔵 Moderate — monitor load
+Whitefield,2026-01-02 14:00,14,Friday,635.1,603.4,666.9,0,🔵 Moderate — monitor load
+Whitefield,2026-01-02 15:00,15,Friday,618.9,587.9,649.8,0,🔵 Moderate — monitor load
+Whitefield,2026-01-02 16:00,16,Friday,632.5,600.9,664.1,0,🔵 Moderate — monitor load
+Whitefield,2026-01-02 17:00,17,Friday,681.6,647.6,715.7,0,🔵 Moderate — monitor load
+Whitefield,2026-01-02 18:00,18,Friday,2314.4,2198.7,2430.1,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-02 19:00,19,Friday,2961.4,2813.3,3109.5,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-02 20:00,20,Friday,3190.6,3031.1,3350.2,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-02 21:00,21,Friday,2681.6,2547.5,2815.6,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-02 22:00,22,Friday,2176.2,2067.4,2285.0,1,⚠️ Delay charging — grid stress expected
+Whitefield,2026-01-02 23:00,23,Friday,1100.5,1045.5,1155.6,1,⚠️ Delay charging — grid stress expected

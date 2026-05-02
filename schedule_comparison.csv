@@ -1,0 +1,7 @@
+zone,transformer_capacity_kw,baseline_peak_load_kw,optimised_peak_load_kw,peak_reduction_kw,peak_reduction_pct,hours_over_limit_baseline,hours_over_limit_optimised,total_ev_energy_kwh,energy_preserved
+Electronic City,1200,2917.1,2140.2,776.9,26.6,8,5,5368.9,True
+HSR Layout,650,2865.4,2155.8,709.6,24.8,13,13,4820.1,False
+Hebbal,600,2036.1,1534.8,501.3,24.6,12,8,3298.8,False
+Indiranagar,750,3238.0,2465.2,772.7,23.9,13,13,5262.8,False
+Koramangala,900,4332.8,3258.8,1074.0,24.8,13,13,7212.9,False
+Whitefield,1100,4433.9,3133.1,1300.8,29.3,13,13,8985.5,False

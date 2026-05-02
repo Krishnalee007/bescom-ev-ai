@@ -1,0 +1,14 @@
+transformer_id,zone,rated_capacity_kw,current_peak_load_kw,headroom_kw,utilization_pct,status,ev_connected_estimate,last_updated
+KR-TR1,Koramangala,900,837.0,63.0,93.0,Critical,603,2025-12-15 19:00
+KR-TR2,Koramangala,700,1611.9,-911.9,99.0,Critical,469,2025-12-15 19:00
+HSR-TR1,HSR Layout,650,1379.7,-729.7,99.0,Critical,404,2025-12-15 19:00
+HSR-TR2,HSR Layout,500,1035.3,-535.3,99.0,Critical,310,2025-12-15 19:00
+WF-TR1,Whitefield,1100,1413.4,-313.4,99.0,Critical,387,2025-12-15 19:00
+WF-TR2,Whitefield,900,1154.6,-254.6,99.0,Critical,317,2025-12-15 19:00
+WF-TR3,Whitefield,700,906.1,-206.1,99.0,Critical,246,2025-12-15 19:00
+EC-TR1,Electronic City,1200,1329.1,-129.1,99.0,Critical,329,2025-12-15 19:00
+EC-TR2,Electronic City,900,738.0,162.0,82.0,Warning,246,2025-12-15 19:00
+HB-TR1,Hebbal,600,898.4,-298.4,99.0,Critical,260,2025-12-15 19:00
+HB-TR2,Hebbal,500,816.8,-316.8,99.0,Critical,217,2025-12-15 19:00
+IND-TR1,Indiranagar,750,1578.1,-828.1,99.0,Critical,451,2025-12-15 19:00
+IND-TR2,Indiranagar,600,1275.6,-675.6,99.0,Critical,360,2025-12-15 19:00
