@@ -395,10 +395,10 @@ def build_map(
     # ── Plugins ───────────────────────────────────────────────
     plugins.Fullscreen(position="topright").add_to(m)
     plugins.MiniMap(
-        tile_layer="CartoDB dark_all",
-        position="bottomright",
-        width=120, height=100,
-        zoom_level_offset=-6,
+    tile_layer="CartoDB dark_all",
+    position="bottomright",
+    width=120, height=100,
+    zoom_level_offset=-6,
     ).add_to(m)
     plugins.MousePosition(position="bottomleft").add_to(m)
 
