@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
+from streamlit_folium import st_folium
+from map_component import build_map
 
 st.set_page_config(
     page_title="BESCOM EV Grid Intelligence",
@@ -278,109 +280,172 @@ elif "Scheduler" in page:
 
 
 # ════════════════════ PAGE 4 — INFRASTRUCTURE PLANNER ════════════════════
+# ════════════════════════════════════════════════════════════════
+# PATCH — Infrastructure Planner page (replace the existing
+# "elif Infrastructure" block in app.py with this entire block)
+#
+# Also add these two imports at the TOP of app.py:
+#   from streamlit_folium import st_folium
+#   from map_component import build_map
+#
+# And add to requirements.txt:
+#   folium
+#   streamlit-folium
+# ════════════════════════════════════════════════════════════════
+
 elif "Infrastructure" in page:
     st.title("📍 Infrastructure Location Planner")
     st.caption("3-factor AI scoring · Demand 40% · Coverage Gap 30% · Grid Headroom 30%")
     st.divider()
 
+    # ── Priority ranking cards ──────────────────────────────
     st.subheader("🏆 Zone Priority Ranking")
     medals = ["🥇","🥈","🥉","4️⃣","5️⃣","6️⃣"]
     cols = st.columns(3)
     for i, (_, row) in enumerate(priority.iterrows()):
         color = ZONE_COLORS.get(row["zone"], "#888")
-        with cols[i%3]:
+        with cols[i % 3]:
             with st.container(border=True):
                 st.markdown(
                     f"{medals[i]}&nbsp;"
-                    f"<span style='color:{color};font-size:15px;font-weight:700'>{row['zone']}</span>"
-                    f"&nbsp;<span style='background:{color};color:white;border-radius:5px;"
+                    f"<span style='color:{color};font-size:15px;font-weight:700'>"
+                    f"{row['zone']}</span>&nbsp;"
+                    f"<span style='background:{color};color:white;border-radius:5px;"
                     f"padding:2px 8px;font-size:12px'>{row['composite_score']:.0f} pts</span>",
-                    unsafe_allow_html=True)
-                st.caption(row.get("priority_tier",""))
-                a,b,c = st.columns(3)
+                    unsafe_allow_html=True,
+                )
+                st.caption(row.get("priority_tier", ""))
+                a, b, c = st.columns(3)
                 a.metric("Demand",   f"{row['demand_score']:.0f}")
                 b.metric("Coverage", f"{row['coverage_gap_score']:.0f}")
                 c.metric("Grid",     f"{row['grid_headroom_score']:.0f}")
 
     st.divider()
-    col_ch, col_map = st.columns([2,3])
+
+    # ── Score breakdown chart + Map side by side ────────────
+    col_ch, col_map = st.columns([2, 3])
 
     with col_ch:
         st.subheader("Score Breakdown")
         p = priority.sort_values("composite_score")
-        fig_sc = go.Figure()
-        fig_sc.add_trace(go.Bar(y=p["zone"], x=(p["demand_score"]*0.40).round(1),
-            name="Demand (40%)", orientation="h", marker_color="#3B82F6"))
-        fig_sc.add_trace(go.Bar(y=p["zone"], x=(p["coverage_gap_score"]*0.30).round(1),
-            name="Coverage (30%)", orientation="h", marker_color="#F59E0B"))
-        fig_sc.add_trace(go.Bar(y=p["zone"], x=(p["grid_headroom_score"]*0.30).round(1),
-            name="Grid (30%)", orientation="h", marker_color="#22C55E"))
         PLOT_LAYOUT_NO_LEGEND = {k: v for k, v in PLOT_LAYOUT.items() if k != "legend"}
-        fig_sc.update_layout(barmode="stack", height=320, xaxis_title="Weighted Score",
-            legend=dict(orientation="h", y=-0.25, bgcolor="#0F172A"), **PLOT_LAYOUT_NO_LEGEND)
+        fig_sc = go.Figure()
+        fig_sc.add_trace(go.Bar(
+            y=p["zone"], x=(p["demand_score"] * 0.40).round(1),
+            name="Demand (40%)", orientation="h", marker_color="#3B82F6"))
+        fig_sc.add_trace(go.Bar(
+            y=p["zone"], x=(p["coverage_gap_score"] * 0.30).round(1),
+            name="Coverage (30%)", orientation="h", marker_color="#F59E0B"))
+        fig_sc.add_trace(go.Bar(
+            y=p["zone"], x=(p["grid_headroom_score"] * 0.30).round(1),
+            name="Grid (30%)", orientation="h", marker_color="#22C55E"))
+        fig_sc.update_layout(
+            barmode="stack", height=320, xaxis_title="Weighted Score",
+            legend=dict(orientation="h", y=-0.25, bgcolor="#0F172A"),
+            **PLOT_LAYOUT_NO_LEGEND,
+        )
         st.plotly_chart(fig_sc, use_container_width=True)
 
+        # Transformer status summary below chart
+        st.subheader("⚡ Transformer Status")
+        crit = transformers[transformers["status"] == "Critical"]
+        warn = transformers[transformers["status"] == "Warning"]
+        norm = transformers[transformers["status"] == "Normal"]
+        c1, c2, c3 = st.columns(3)
+        c1.metric("🔴 Critical", len(crit), "Needs action")
+        c2.metric("🟡 Warning",  len(warn), "Monitor")
+        c3.metric("🟢 Normal",   len(norm), "Safe")
+
+        # Transformer table
+        tr_display = transformers[[
+            "transformer_id","zone","rated_capacity_kw",
+            "utilization_pct","status","headroom_kw"
+        ]].rename(columns={
+            "transformer_id":   "TR ID",
+            "zone":             "Zone",
+            "rated_capacity_kw":"Rated kW",
+            "utilization_pct":  "Util %",
+            "status":           "Status",
+            "headroom_kw":      "Headroom kW",
+        })
+        st.dataframe(
+            tr_display.sort_values("Util %", ascending=False),
+            use_container_width=True, hide_index=True, height=220,
+        )
+
     with col_map:
-        st.subheader("Bengaluru Priority Map")
-        ZONE_CENTERS = {
-            "Koramangala":(12.935,77.624), "HSR Layout":(12.911,77.641),
-            "Whitefield":(12.969,77.749),  "Electronic City":(12.839,77.677),
-            "Hebbal":(13.035,77.597),      "Indiranagar":(12.978,77.641),
-        }
-        fig_map = go.Figure()
-        for zone,(lat,lng) in ZONE_CENTERS.items():
-            pr_row = priority[priority["zone"]==zone]
-            sc   = float(pr_row["composite_score"].values[0]) if len(pr_row) else 50
-            rank = int(pr_row["priority_rank"].values[0])     if len(pr_row) else 6
-            fig_map.add_trace(go.Scattermapbox(
-                lat=[lat], lon=[lng], mode="markers+text",
-                marker=dict(size=sc*0.55, color=ZONE_COLORS[zone], opacity=0.7),
-                text=[f"#{rank}"], textfont=dict(size=11, color="white"),
-                name=zone, hovertext=f"{zone} — {sc:.0f} pts", hoverinfo="text"))
-        fig_map.add_trace(go.Scattermapbox(
-            lat=stations["lat"], lon=stations["lng"], mode="markers",
-            marker=dict(size=7, color="#22C55E"), name="Existing stations",
-            hovertext=stations["station_id"], hoverinfo="text"))
-        fig_map.add_trace(go.Scattermapbox(
-            lat=locations["lat"], lon=locations["lng"], mode="markers",
-            marker=dict(size=13, color="#FBBF24", symbol="star"),
-            name="⭐ Recommended", hovertext=locations["location_name"], hoverinfo="text"))
-        fig_map.update_layout(
-            mapbox=dict(style="carto-darkmatter",
-                        center=dict(lat=12.97, lon=77.67), zoom=10.5),
-            height=330, paper_bgcolor="#0F172A", font_color="#94A3B8",
-            legend=dict(bgcolor="#1E293B", bordercolor="#334155", x=0, y=1, font=dict(size=10)),
-            margin=dict(l=0,r=0,t=0,b=0))
-        st.plotly_chart(fig_map, use_container_width=True)
+        st.subheader("🗺️ Bengaluru Grid Intelligence Map")
+        st.caption(
+            "Click any marker for details · Toggle layers top-right · "
+            "⚡ = Transformers · ▲ = Existing stations · ⭐ = Recommended"
+        )
+
+        # Build the folium map
+        folium_map = build_map(
+            transformers=transformers,
+            stations=stations,
+            locations=locations,
+            priority=priority,
+            height=520,
+        )
+
+        # Render inside Streamlit
+        map_data = st_folium(
+            folium_map,
+            width=None,           # fills column width
+            height=520,
+            returned_objects=["last_object_clicked_tooltip"],
+        )
+
+        # Show clicked marker info below map
+        if map_data and map_data.get("last_object_clicked_tooltip"):
+            tip = map_data["last_object_clicked_tooltip"]
+            st.info(f"📌 Selected: **{tip}**")
 
     st.divider()
+
+    # ── Location recommendations table ──────────────────────
     st.subheader("📋 Specific Location Recommendations")
-    zone_filter = st.selectbox("Filter by Zone", ["All Zones"]+ZONES)
-    show_locs = locations if zone_filter=="All Zones" else locations[locations["zone"]==zone_filter]
+    zone_filter = st.selectbox("Filter by Zone", ["All Zones"] + ZONES)
+    show_locs = (locations if zone_filter == "All Zones"
+                 else locations[locations["zone"] == zone_filter])
+
     for _, row in show_locs.sort_values("zone_priority_rank").iterrows():
-        color = ZONE_COLORS.get(row["zone"],"#888")
-        icons = {"DC Fast":"🔵","AC+DC":"🟡","AC Slow":"🟢"}
-        ctype = str(row.get("recommended_charger_type",""))
+        color = ZONE_COLORS.get(row["zone"], "#888")
+        icons = {"DC Fast": "🔵", "AC+DC": "🟡", "AC Slow": "🟢"}
+        ctype = str(row.get("recommended_charger_type", ""))
         with st.container(border=True):
-            cl, cr = st.columns([4,1])
+            cl, cr = st.columns([4, 1])
             with cl:
-                st.markdown(f"<span style='color:{color};font-weight:700'>📍 {row['location_name']}</span>",
-                            unsafe_allow_html=True)
-                st.caption(row.get("rationale",""))
+                st.markdown(
+                    f"<span style='color:{color};font-weight:700'>"
+                    f"📍 {row['location_name']}</span>",
+                    unsafe_allow_html=True,
+                )
+                st.caption(row.get("rationale", ""))
             with cr:
                 st.markdown(f"{icons.get(ctype,'⚪')} **{ctype}**  \n"
-                            f"Score: **{row['composite_score']:.0f}**")
-            st.caption(f"📌 {row['lat']:.4f}, {row['lng']:.4f}  ·  "
-                       f"⚡ {row['grid_headroom_available_kw']:.0f} kW headroom  ·  "
-                       f"~{row['estimated_daily_sessions']} sessions/day")
+                             f"Score: **{row['composite_score']:.0f}**")
+            st.caption(
+                f"📌 {row['lat']:.4f}, {row['lng']:.4f}  ·  "
+                f"⚡ {row['grid_headroom_available_kw']:.0f} kW headroom  ·  "
+                f"~{row['estimated_daily_sessions']} sessions/day"
+            )
 
     st.divider()
+
+    # ── Baseline comparison ─────────────────────────────────
     st.subheader("📐 AI vs Uniform Placement Baseline")
     comp_rows = []
     for zone in ZONES:
-        pr = priority[priority["zone"]==zone]
+        pr = priority[priority["zone"] == zone]
         sc = float(pr["composite_score"].values[0]) if len(pr) else 50
-        ai = 3 if sc>=65 else 2 if sc>=45 else 1
-        comp_rows.append({"Zone":zone,"Uniform (2 per zone)":2,"AI Recommended":ai,
-                          "Priority Score":f"{sc:.0f}","Difference":f"{ai-2:+d}"})
+        ai = 3 if sc >= 65 else 2 if sc >= 45 else 1
+        comp_rows.append({
+            "Zone":               zone,
+            "Uniform (2 per zone)": 2,
+            "AI Recommended":     ai,
+            "Priority Score":     f"{sc:.0f}",
+            "Difference":         f"{ai - 2:+d}",
+        })
     st.dataframe(pd.DataFrame(comp_rows), use_container_width=True, hide_index=True)
